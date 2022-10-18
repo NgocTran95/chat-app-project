@@ -1,0 +1,39 @@
+@import 'normalize.css';
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@200;300;400;500;600;700;800&display=swap');
+:root {
+    --primary-color: #76C00D;
+    --secondary-color: #296eff;
+    --text-area-color: #F9FAFC;
+    --background-color: #ffffff;
+    --button-color: #EAEEF0;
+    // Online Status
+    --afk-status-color: #FFBD08;
+    --offline-status-color: #AFBBC6;
+    // Text-color
+    --text-color: #4b5155;
+    --blur-text-color: #7b8793;
+}
+
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    font-size: 62.5%;
+}
+
+body {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1.6rem;
+    line-height: 1.5;
+    color: var(--text-color);
+    text-rendering: optimizeSpeed;
+}
+
+button {
+    outline: none;
+    border: none;
+    font-family: inherit;
+}

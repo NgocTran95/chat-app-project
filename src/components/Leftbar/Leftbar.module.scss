@@ -1,0 +1,41 @@
+.leftbar {
+    width: 358px;
+    height: 100%;
+    margin-right: 17px;
+}
+
+.leftbar-inner {
+    padding-right: 23px;
+    padding-top: 11px;
+}
+
+.leftbar-header {
+    display: flex;
+    align-items: center;
+    padding-left: 8px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    .logo {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .brand {
+        position: relative;
+        display: flex;
+        align-items: center;
+        padding-left: 14px;
+        h2 {
+            font-size: 3rem;
+            line-height: 1;
+        }
+        span {
+            position: absolute;
+            right: 0;
+            top: -10px;
+            font-size: 1.4rem;
+            line-height: 1;
+            color: #7b8793;
+        }
+    }
+}
