@@ -1,0 +1,71 @@
+.container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+// Header
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 15px;
+  flex-shrink: 0;
+  span {
+    font-size: 16px;
+    font-weight: 500;
+  }
+  .add-btn {
+    background-color: rgba(0, 0, 0, 0.04);
+    padding: 6px 7px;
+    border-radius: 3px;
+    cursor: pointer;
+    .icon {
+      font-size: 12px;
+      color: var(--primary-color);
+    }
+  }
+}
+
+//Search Input
+.search-field {
+  height: 40px;
+  width: 100%;
+  padding: 8px 5px 8px 15px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+  &:has(input:focus) {
+    border: 1px solid var(--primary-color);
+  }
+}
+.search-input {
+  flex: 1;
+  font-size: 1.4rem;
+  font-weight: 500;
+  line-height: 1;
+}
+
+.search-btn {
+  border-radius: 5px !important;
+}
+
+.search-icon {
+  font-size: 1.5rem;
+}
+
+// Rooms
+
+.rooms {
+  height: calc(9 * 64px);
+  margin-right: -23px;
+  padding-right: 23px;
+  overflow-y: hidden;
+  overscroll-behavior: contain;
+  &:hover {
+    overflow-y: overlay;
+    transition: all 0.25s ease-in-out;
+  }
+}

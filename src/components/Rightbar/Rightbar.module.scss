@@ -1,0 +1,52 @@
+.container {
+  width: 293px;
+  height: 100%;
+  padding-top: 21px;
+  padding-left: 22px;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 50px;
+  .toggle-btn {
+    font-size: 1.6rem;
+    background-color: rgba(0, 0, 0, 0.04);
+    padding: 13px;
+  }
+  p {
+    font-size: 1.8rem;
+    font-weight: 500;
+    padding-left: 14px;
+  }
+}
+
+.actions {
+    margin-bottom: 50px;
+    text-align: center;
+}
+
+.call-btn {
+  height: 40px;
+  min-width: 130px;
+  border-radius: 20px !important;
+  color: #ffffff !important;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+
+  ~ .call-btn {
+    margin-left: 10px;
+  }
+  &.voice-chat {
+    background-color: var(--primary-color);
+  }
+  &.video-call {
+    background-color: #d03e13;
+  }
+  .call-icon {
+    font-size: 1.9rem;
+    margin-right: 8px;
+  }
+}

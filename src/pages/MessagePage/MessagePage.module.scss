@@ -1,8 +1,12 @@
 .container {
-    width: 100%;
+    margin: auto;
+    max-width: 1440px;
+    height: 100vh;
     background-color: var(--background-color);
     display: flex;
     justify-content: center;
     align-items: center;
     padding: 20px 18px 20px 35px;
+    overflow: hidden;
+    border-radius: 15px;
 }

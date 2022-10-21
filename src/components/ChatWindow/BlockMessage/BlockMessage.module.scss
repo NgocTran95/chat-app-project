@@ -1,0 +1,71 @@
+.container {
+  display: flex;
+  & ~ .container {
+    margin-top: 40px;
+  }
+  &.user-msg {
+    align-self: flex-end;
+    flex-direction: row-reverse;
+    .avatar {
+      margin-right: 0px;
+      margin-left: 16px;
+    }
+    .messages {
+      align-items: flex-end;
+      .message {
+        background-color: var(--primary-color);
+        color: #ffffff;
+        &:first-of-type {
+          border-bottom-left-radius: 10px;
+          border-bottom-right-radius: 0;
+        }
+        &:last-of-type {
+          border-top-left-radius: 10px;
+          border-top-right-radius: 0;
+        }
+        &:not(:last-of-type):not(:first-of-type) {
+          border-top-right-radius: 0;
+          border-bottom-right-radius: 0;
+          border-top-left-radius: 10px;
+          border-bottom-left-radius: 10px;
+        }
+      }
+    }
+  }
+}
+
+.avatar {
+  margin-right: 16px;
+}
+
+.messages {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  .message {
+    width: fit-content;
+    font-size: 1.4rem;
+    font-weight: 500;
+    padding: 8px 15px;
+    background-color: var(--background-color);
+    border-radius: 10px;
+    & ~ .message {
+      margin-top: 5px;
+    }
+    &:first-of-type {
+      border-bottom-left-radius: 0;
+    }
+    &:last-of-type {
+      border-top-left-radius: 0;
+    }
+    &:not(:last-of-type):not(:first-of-type) {
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;
+    }
+  }
+
+  .create-time {
+    font-size: 1rem;
+    padding-left: 15px;
+  }
+}
