@@ -1,8 +1,21 @@
 .container {
   width: 293px;
+  max-width: 293px;
   height: 100%;
   padding-top: 21px;
   padding-left: 22px;
+  margin-right: 20px;
+  overflow: hidden;
+  transition: max-width 0.25s ease-in-out;
+  &.close {
+    max-width: 50px;
+    padding-left: 0px;
+    margin-left: 10px;
+    margin-right: 10px;
+    .header {
+      justify-content: center;
+    }
+  }
 }
 
 .header {
@@ -22,8 +35,8 @@
 }
 
 .actions {
-    margin-bottom: 50px;
-    text-align: center;
+  margin-bottom: 30px;
+  text-align: center;
 }
 
 .call-btn {
@@ -35,7 +48,6 @@
   align-items: center;
   justify-content: center;
   cursor: pointer;
-
   ~ .call-btn {
     margin-left: 10px;
   }
@@ -48,5 +60,13 @@
   .call-icon {
     font-size: 1.9rem;
     margin-right: 8px;
+  }
+  &.close {
+    min-width: 40px;
+    margin-left: 0;
+    margin-top: 10px;
+    .call-icon {
+      margin-right: 0;
+    }
   }
 }

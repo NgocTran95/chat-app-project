@@ -1,0 +1,43 @@
+.chat-file {
+  display: flex;
+  align-items: center;
+  & ~ .chat-file {
+    margin-top: 10px;
+  }
+}
+
+.avatar-icon {
+  font-size: 1.8rem;
+}
+
+.files-info {
+  flex: 1;
+  padding-left: 17px;
+}
+
+.files-type {
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1;
+  color: var(--blur-text-color);
+  margin-bottom: 5px;
+}
+
+.files-qtt {
+  font-size: 1.4rem;
+  line-height: 1;
+  font-weight: 500;
+}
+
+.files-size {
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--blur-text-color);
+  margin-right: 15px;
+}
+
+.files-more {
+  font-size: 1rem;
+  width: 30px;
+  height: 30px;
+}
