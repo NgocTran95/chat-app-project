@@ -12,7 +12,7 @@ function RoomInfo() {
     <div className={cx('container')}>
       <div className={cx('avatar')}>
         <Avatar
-          src="https://theimportantsite.com/wp-content/uploads/2020/04/family-1466262_1280-2.jpg"
+          src="https://d1nslcd7m2225b.cloudfront.net/Pictures/1024x536/2/4/4/1230244_Minions+3.jpg"
           sx={{ width: 60, height: 60 }}
           alt="avatar"
         />

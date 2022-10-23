@@ -17,11 +17,19 @@
 
 .name {
     font-size: 1.8rem;
+    max-width: 200px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
 }
 
 .desc {
     font-size: 1.2rem;
     color: var(--blur-text-color);
+    max-width: 200px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
 }
 
 .status {

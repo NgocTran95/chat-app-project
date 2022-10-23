@@ -1,9 +1,9 @@
 import classNames from 'classnames/bind';
 
 import styles from './MessagePage.module.scss'
-import ChatWindow from '~/components/ChatWindow';
-import Leftbar from '~/components/Leftbar';
-import Rightbar from '~/components/Rightbar';
+import ChatWindow from '~/pages/MessagePage/ChatWindow';
+import Leftbar from '~/pages/MessagePage/Leftbar';
+import Rightbar from '~/pages/MessagePage/Rightbar';
 
 const cx = classNames.bind(styles)
 

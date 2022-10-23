@@ -17,10 +17,10 @@
 }
 // Avatar
 .avatar {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 30px;
 }
 
 // Actions
@@ -37,8 +37,10 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  margin-top: 10px;
   cursor: pointer;
+  ~ .call-btn {
+    margin-top: 10px !important;
+  }
   &.voice-chat {
     background-color: var(--primary-color);
   }

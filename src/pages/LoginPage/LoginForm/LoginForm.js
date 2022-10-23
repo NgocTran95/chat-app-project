@@ -1,14 +1,26 @@
 import classNames from 'classnames/bind';
-import styles from './LoginForm.module.scss';
-import { auth } from '~/firebase/config';
+import { auth, db } from '~/firebase/config';
 import { signInWithPopup, FacebookAuthProvider } from 'firebase/auth';
+import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
 
+import styles from './LoginForm.module.scss';
 const fbProvider = new FacebookAuthProvider();
 const cx = classNames.bind(styles);
 
+
 function LoginForm() {
-  const handleLoginFacebook = () => {
-    signInWithPopup(auth, fbProvider);
+  const handleLoginFacebook = async() => {
+    const { _tokenResponse, user, providerId } = await signInWithPopup(auth, fbProvider);
+    if (_tokenResponse?.isNewUser) {
+      addDoc(collection(db, 'users'), {
+        displayName: user.displayName,
+        email: user.email,
+        photoURL: user.photoURL,
+        uid: user.uid,
+        providerId: providerId,
+        createAt: serverTimestamp()
+      })
+    }
   };
 
   return (

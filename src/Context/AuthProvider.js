@@ -30,7 +30,7 @@ function AuthProvider({ children }) {
 
   return (
     <AuthContext.Provider
-        value={{ user }}
+        value={{ ...user }}
     >
         {isLoading ? <CircularProgress /> : children}
     </AuthContext.Provider>);

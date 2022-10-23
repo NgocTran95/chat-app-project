@@ -2,11 +2,15 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faSearch } from '@fortawesome/free-solid-svg-icons';
 import { IconButton } from '@mui/material';
 import classNames from 'classnames/bind';
+import { useContext } from 'react';
+
+
 import ChatRoom from './ChatRoom';
 import styles from './RoomList.module.scss';
-
+import { AppContext } from '~/Context/AppProvider';
 const cx = classNames.bind(styles);
 function RoomList() {
+  const { rooms } = useContext(AppContext)
   return (
     <div className={cx('container')}>
       <header className={cx('header')}>
@@ -22,18 +26,11 @@ function RoomList() {
         </IconButton>
       </form>
       <div className={cx('rooms')}>
-        <ChatRoom isActive={true} />
-        <ChatRoom />
-        <ChatRoom />
-        <ChatRoom />
-        <ChatRoom />
-        <ChatRoom />
-        <ChatRoom />
-        <ChatRoom />
-        <ChatRoom />
-        <ChatRoom />
-        <ChatRoom />
-        <ChatRoom />
+        {
+          rooms.map(room => (
+            <ChatRoom key={room.id} {...room}/>
+          ))
+        }
       </div>
     </div>
   );

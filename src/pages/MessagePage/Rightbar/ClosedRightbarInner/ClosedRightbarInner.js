@@ -1,6 +1,14 @@
 import classNames from 'classnames/bind';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowRight, faPhone, faVideo, faFileLines, faFileImage, faFilm, faFile } from '@fortawesome/free-solid-svg-icons';
+import {
+  faArrowRight,
+  faPhone,
+  faVideo,
+  faFileLines,
+  faFileImage,
+  faFilm,
+  faFile,
+} from '@fortawesome/free-solid-svg-icons';
 import { ButtonBase, IconButton, Avatar } from '@mui/material';
 
 import styles from './ClosedRightbarInner.module.scss';
@@ -11,13 +19,13 @@ function ClosedRightbarInner({ handleToggleRightBar }) {
   return (
     <div className={cx('inner')}>
       <header className={cx('header')}>
-        <IconButton className={cx('toggle-btn')} onClick={()=> handleToggleRightBar()}>
+        <IconButton className={cx('toggle-btn')} onClick={() => handleToggleRightBar()}>
           <FontAwesomeIcon icon={faArrowRight} />
         </IconButton>
       </header>
       <div className={cx('avatar')}>
         <Avatar
-          src="https://theimportantsite.com/wp-content/uploads/2020/04/family-1466262_1280-2.jpg"
+          src="https://d1nslcd7m2225b.cloudfront.net/Pictures/1024x536/2/4/4/1230244_Minions+3.jpg"
           sx={{ width: 40, height: 40 }}
           alt="avatar"
         />

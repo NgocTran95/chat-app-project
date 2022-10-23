@@ -3,17 +3,17 @@ import ProfileAvatar from '~/components/ProfileAvatar';
 import styles from './ChatRoom.module.scss';
 
 const cx = classNames.bind(styles);
-function ChatRoom({ isActive }) {
+function ChatRoom({ isActive, name }) {
   return (
     <div className={cx('container', `${isActive ? 'active' : ''}`)}>
       <ProfileAvatar
         status="Online"
-        image="https://theimportantsite.com/wp-content/uploads/2020/04/family-1466262_1280-2.jpg"
+        image="https://d1nslcd7m2225b.cloudfront.net/Pictures/1024x536/2/4/4/1230244_Minions+3.jpg"
         width={50}
         height={50}
       />
       <div className={cx('infor')}>
-        <div className={cx('group-name')}>Funny Friends</div>
+        <div className={cx('group-name')}>{name}</div>
         <p className={cx('last-msg')}>
           <span className="person">Me</span>: <span className={cx('content')}>Hey Jeff, come on! Where r u now?</span>
         </p>
