@@ -7,10 +7,7 @@ import ProfileAvatar from '~/components/ProfileAvatar';
 import { statusColors } from '~/Constants';
 
 const cx = classNames.bind(styles);
-function Member({ image, name, status, isOpen }) {
-  if (!isOpen) {
-    return <ProfileAvatar name={name} image={image} status={status} width={40} height={40} />;
-  }
+function Member({ image, name, status }) {
   return (
     <div className={cx('container')}>
       <ProfileAvatar name={name} image={image} status={status} width={36} height={36} />

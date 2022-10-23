@@ -1,0 +1,106 @@
+// Header
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 50px;
+  .toggle-btn {
+    font-size: 1.6rem;
+    background-color: rgba(0, 0, 0, 0.04);
+    padding: 13px;
+  }
+  p {
+    font-size: 1.8rem;
+    font-weight: 500;
+    padding-left: 14px;
+  }
+}
+// Avatar
+.avatar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 30px;
+}
+
+// Actions
+.actions {
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.call-btn {
+  height: 40px;
+  min-width: 40px;
+  border-radius: 20px !important;
+  color: #ffffff !important;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 10px;
+  cursor: pointer;
+  &.voice-chat {
+    background-color: var(--primary-color);
+  }
+  &.video-call {
+    background-color: #d03e13;
+  }
+  .call-icon {
+    font-size: 1.9rem;
+  }
+}
+
+// Members
+.members {
+  margin-bottom: 20px;
+}
+
+.members-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.members-title {
+  font-size: 1.4rem;
+  line-height: 1;
+  font-weight: 500;
+}
+
+.member-list {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  max-height: 200px;
+  overflow: hidden;
+  &:hover {
+    overflow-y: overlay;
+  }
+}
+
+// Files
+.files-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 10px;
+}
+
+.files-title {
+  font-size: 1.4rem;
+  line-height: 1;
+  font-weight: 500;
+}
+
+.files-icons {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.files-icon {
+  font-size: 1.8rem;
+}

@@ -1,51 +1,41 @@
 .container {
-    margin-bottom: 20px;
+  margin-bottom: 20px;
 }
 
 .header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
 }
 
 .title {
-    font-size: 1.4rem;
-    line-height: 1;
-    font-weight: 500;
+  font-size: 1.4rem;
+  line-height: 1;
+  font-weight: 500;
 }
 
 .tools {
-    .btn {
-        width: 24px;
-        height: 24px;
-        border-radius: 3px;
-        font-size: 1.2rem;
-        &~.btn {
-            margin-left: 10px;
-        }
+  .btn {
+    width: 24px;
+    height: 24px;
+    border-radius: 3px;
+    font-size: 1.2rem;
+    & ~ .btn {
+      margin-left: 10px;
     }
+  }
 }
 
 .members {
-    overflow-y: hidden;
-    transition: all 0.25s ease-in-out;
-    max-height: 0;
-    &.show {
-        max-height: 255px;
-        overscroll-behavior: contain;
-        &:hover{
-            overflow-y: overlay;
-        }
+  overflow-y: hidden;
+  transition: all 0.25s ease-in-out;
+  max-height: 0;
+  &.show {
+    max-height: 255px;
+    overscroll-behavior: contain;
+    &:hover {
+      overflow-y: overlay;
     }
-    &.small {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 10px;
-        max-height: 200px;
-        &:hover{
-            overflow-y: overlay;
-        }
-    }
+  }
 }
