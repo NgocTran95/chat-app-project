@@ -2,11 +2,11 @@ import classNames from 'classnames/bind';
 import { auth, db } from '~/firebase/config';
 import { signInWithPopup, FacebookAuthProvider } from 'firebase/auth';
 import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
+import { generateKeyWords } from '~/firebase/services'
 
 import styles from './LoginForm.module.scss';
 const fbProvider = new FacebookAuthProvider();
 const cx = classNames.bind(styles);
-
 
 function LoginForm() {
   const handleLoginFacebook = async() => {
@@ -18,6 +18,7 @@ function LoginForm() {
         photoURL: user.photoURL,
         uid: user.uid,
         providerId: providerId,
+        keywords: generateKeyWords(user.displayName?.toLowerCase()),
         createAt: serverTimestamp()
       })
     }

@@ -13,9 +13,13 @@ import { ButtonBase, IconButton, Avatar } from '@mui/material';
 
 import styles from './ClosedRightbarInner.module.scss';
 import ProfileAvatar from '~/components/ProfileAvatar';
-import { members } from '~/MockData/data';
+import { useContext } from 'react';
+import { AppContext } from '~/Context/AppProvider';
+import { AuthContext } from '~/Context/AuthProvider';
 const cx = classNames.bind(styles);
 function ClosedRightbarInner({ handleToggleRightBar }) {
+  const { members } = useContext(AppContext)
+  const { uid } = useContext(AuthContext)
   return (
     <div className={cx('inner')}>
       <header className={cx('header')}>
@@ -44,10 +48,10 @@ function ClosedRightbarInner({ handleToggleRightBar }) {
         </header>
         <div className={cx('member-list')}>
           {members
-            .filter((member) => member.isUser === false)
+            .filter((member) => member.uid !== uid)
             .map((member) => {
-              const { id, name, image, status } = member;
-              return <ProfileAvatar key={id} name={name} image={image} status={status} width={40} height={40} />;
+              const { uid, displayName, photoURL, status } = member;
+              return <ProfileAvatar key={uid} name={displayName} image={photoURL} status={status} width={40} height={40} />;
             })}
         </div>
       </div>

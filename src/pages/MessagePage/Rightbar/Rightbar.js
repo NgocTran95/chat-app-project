@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft, faPhone, faVideo } from '@fortawesome/free-solid-svg-icons';
 import { ButtonBase, IconButton } from '@mui/material';
@@ -9,13 +9,16 @@ import RoomInfo from './RoomInfo';
 import Members from './Members';
 import ChatFiles from './ChatFiles';
 import ClosedRightbarInner from './ClosedRightbarInner';
+import { AppContext } from '~/Context/AppProvider';
 
 const cx = classNames.bind(styles);
 function Rightbar() {
-  const [isOpen, setIsOpen] = useState(true);
+  const { selectedRoomId } = useContext(AppContext)
+  const [isOpen, setIsOpen] = useState(false);
   const handleToggleRightBar = () => {
     setIsOpen((prev) => !prev);
   };
+  if (selectedRoomId === '') return
   return (
     <div className={cx('container', isOpen ? '' : 'close')}>
       {isOpen ? (

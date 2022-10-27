@@ -12,18 +12,16 @@ export const useFireStore = (collectionName, condition) => {
         compareValue: 'acd'
 
     } */
-    console.log(collectionName, condition);
     let collectionRef;
     if (condition) {
-      if (!condition.compareValue || !condition.compareValue.length) {
+      if (!condition.compareValue?.length) {
         return;
       }
       collectionRef = query(
         collection(db, collectionName),
-        where(condition.fieldName, condition.operator, condition.compareValue),
         orderBy('createAt'),
+        where(condition.fieldName, condition.operator, condition.compareValue),
       );
-      console.log(collection(db, collectionName));
     }
     const unsubcribe = onSnapshot(collectionRef, (snapshot) => {
       const documents = snapshot.docs.map((doc) => ({

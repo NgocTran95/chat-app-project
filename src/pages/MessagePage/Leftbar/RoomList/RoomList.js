@@ -4,18 +4,21 @@ import { IconButton } from '@mui/material';
 import classNames from 'classnames/bind';
 import { useContext } from 'react';
 
-
 import ChatRoom from './ChatRoom';
 import styles from './RoomList.module.scss';
 import { AppContext } from '~/Context/AppProvider';
 const cx = classNames.bind(styles);
 function RoomList() {
-  const { rooms } = useContext(AppContext)
+  const { rooms, setIsOpenAddRoom } = useContext(AppContext);
+  const handleOpenAddRoom = () => {
+    setIsOpenAddRoom(true);
+  };
+  console.log(rooms);
   return (
     <div className={cx('container')}>
       <header className={cx('header')}>
         <span>Actives Chats</span>
-        <IconButton className={cx('add-btn')}>
+        <IconButton className={cx('add-btn')} onClick={handleOpenAddRoom}>
           <FontAwesomeIcon icon={faPlus} className={cx('icon')} />
         </IconButton>
       </header>
@@ -26,11 +29,12 @@ function RoomList() {
         </IconButton>
       </form>
       <div className={cx('rooms')}>
-        {
-          rooms.map(room => (
-            <ChatRoom key={room.id} {...room}/>
-          ))
-        }
+        {rooms.map((room) => (
+          <ChatRoom
+            key={room.id}
+            {...room}
+          />
+        ))}
       </div>
     </div>
   );

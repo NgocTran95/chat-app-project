@@ -3,7 +3,7 @@
 :root {
     --primary-color: #76C00D;
     --secondary-color: #296eff;
-    --text-area-color: #F9FAFC;
+    --text-area-color: rgba(118,192,13,0.1);
     --background-color: #ffffff;
     --button-color: #EAEEF0;
     --light-gray-bg-color: #dbe5ed;
@@ -13,6 +13,8 @@
     // Text-color
     --text-color: #4b5155;
     --blur-text-color: #7b8793;
+    // Font
+    --primary-font: 'Montserrat', sans-serif;
 }
 
 *, *::before, *::after {
@@ -26,7 +28,7 @@ html {
 }
 
 body {
-    font-family: 'Montserrat', sans-serif;
+    font-family: var(--primary-font);
     font-size: 1.6rem;
     line-height: 1.5;
     color: var(--text-color);
@@ -37,7 +39,7 @@ body {
 button, input {
     outline: none;
     border: none;
-    font-family: inherit;
+    font-family: var(--primary-font);
 }
 
 // Scroll bar

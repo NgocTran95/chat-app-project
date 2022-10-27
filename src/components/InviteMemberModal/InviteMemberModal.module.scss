@@ -1,0 +1,54 @@
+.container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  min-width: 500px;
+  background-color: #ffffff;
+  border: none;
+  outline: none;
+  border-radius: 10px;
+  padding: 10px 20px 20px;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.close-btn {
+  width: 30px;
+  height: 30px;
+  &:hover {
+    color: red;
+  }
+}
+
+.form {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  input,
+  span, label {
+    font-size: 1.4rem !important;
+    font-weight: 500 !important;
+  }
+}
+
+.btn-groups {
+  align-self: flex-end;
+  margin-top: 30px;
+}
+
+.btn {
+  min-width: 100px;
+  height: 35px;
+  font-size: 1.3rem;
+  font-weight: 500;
+  border-radius: 5px !important;
+  &.add-btn {
+    background-color: var(--primary-color);
+    color: #ffffff;
+  }
+}

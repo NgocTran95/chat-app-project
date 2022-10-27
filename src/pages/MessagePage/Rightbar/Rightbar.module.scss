@@ -4,13 +4,12 @@
   height: 100%;
   padding-top: 21px;
   padding-left: 22px;
-  margin-right: 20px;
   overflow: hidden;
   &.close {
     max-width: 50px;
     padding-left: 0px;
     margin-left: 10px;
-    margin-right: 10px;
+    margin-right: -10px;
     .header {
       justify-content: center;
     }

@@ -42,6 +42,9 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    .person {
+      color: var(--primary-color);
+    }
   }
 }
 
