@@ -33,7 +33,7 @@ function RoomInfo() {
         <p className={cx('member-quantity')}>{members.length} members</p>
         <p className={cx('last-msg-info')}>
           <span>Last message: </span>
-          <span>{formatDate(lastMessage.createAt?.seconds)}</span>
+          <span>{formatDate(lastMessage?.createAt?.seconds)}</span>
         </p>
       </div>
     </div>

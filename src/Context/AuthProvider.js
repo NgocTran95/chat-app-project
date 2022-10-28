@@ -1,39 +1,33 @@
 import { createContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { auth } from '~/firebase/config';
-import { CircularProgress } from '@mui/material'
+import { CircularProgress } from '@mui/material';
 
 export const AuthContext = createContext();
 
 function AuthProvider({ children }) {
   const navigate = useNavigate();
   const [user, setUser] = useState({});
-  const [isLoading, setIsLoading] = useState(true)
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const unsubcribed = auth.onAuthStateChanged((user) => {
       if (user) {
-        console.log(user);
         const { displayName, email, uid, photoURL } = user;
         setUser({ displayName, email, uid, photoURL });
-        setIsLoading(false)
+        setIsLoading(false);
         navigate('/');
-        return
+        return;
       }
-      setIsLoading(false)
-      navigate('/login')
+      setIsLoading(false);
+      navigate('/login');
     });
     return () => {
       unsubcribed();
     };
   }, [navigate]);
-
-  return (
-    <AuthContext.Provider
-        value={{ ...user }}
-    >
-        {isLoading ? <CircularProgress /> : children}
-    </AuthContext.Provider>);
+ 
+  return <AuthContext.Provider value={{ ...user }}>{isLoading ? <CircularProgress /> : children}</AuthContext.Provider>;
 }
 
 export default AuthProvider;

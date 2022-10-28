@@ -13,7 +13,6 @@ function RoomList() {
   const handleOpenAddRoom = () => {
     setIsOpenAddRoom(true);
   };
-  console.log(rooms);
   return (
     <div className={cx('container')}>
       <header className={cx('header')}>

@@ -8,7 +8,7 @@ import { useFireStore } from '~/hooks/useFireStore';
 
 const cx = classNames.bind(styles);
 function ChatRoom({ name, id }) {
-  const { setSelectedRoomId, selectedRoomId } = useContext(AppContext);
+  const { setSelectedRoomId, selectedRoomId, emailUser } = useContext(AppContext);
 
   // Got last message in this room
   const messagesCondition = useMemo(() => {
@@ -34,7 +34,7 @@ function ChatRoom({ name, id }) {
         <div className={cx('group-name')}>{name}</div>
         {!!lastMessages && (
           <p className={cx('last-msg')}>
-            <span className={cx('person')}>{lastMessages?.displayName.slice(0, 5)}: </span>
+            <span className={cx('person')}>{lastMessages?.displayName?.slice(0, lastMessages?.displayName?.indexOf(' '))}: </span>
             <span className={cx('content')}>{lastMessages?.text}</span>
           </p>
         )}

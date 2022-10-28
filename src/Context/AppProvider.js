@@ -39,6 +39,17 @@ function AppProvider({ children }) {
     }
   }, [selectedRoomId])
   const messages = useFireStore('messages', messagesCondition)
+
+  // Create this field because firebase does not support getting displayName, photo URL when login by Email
+  // => get displayName from firestore (add doc when sign up) instead of from auth provider, photoURL set by default Avatar MUI component
+  const emaiUserCondition = useMemo(() => {
+    return {
+      fieldName: 'uid',
+      operator: '==',
+      compareValue: uid,
+    };
+  }, [uid]);
+  const emailUser = useFireStore('users', emaiUserCondition);
   return (
     <AppContext.Provider
       value={{
@@ -52,6 +63,7 @@ function AppProvider({ children }) {
         isOpenInviteMember,
         setIsOpenInviteMember,
         messages,
+        emailUser
       }}
     >
       {children}

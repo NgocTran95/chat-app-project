@@ -17,6 +17,7 @@ function ChatWindow() {
   const [messageValue, setMessageValue] = useState('');
   const { selectedRoom, selectedRoomId, members, messages } = useContext(AppContext);
   const { uid, photoURL, displayName } = useContext(AuthContext);
+  const { emailUser } = useContext(AppContext)
   if (selectedRoomId === '')
     return (
       <div className={cx('container')}>
@@ -32,7 +33,7 @@ function ChatWindow() {
       text: messageValue,
       uid,
       photoURL,
-      displayName,
+      displayName: displayName || emailUser[0].displayName,
       roomId: selectedRoomId,
       createAt: serverTimestamp(),
     });
