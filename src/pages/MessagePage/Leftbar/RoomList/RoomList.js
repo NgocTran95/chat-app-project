@@ -16,7 +16,7 @@ function RoomList() {
   return (
     <div className={cx('container')}>
       <header className={cx('header')}>
-        <span>Actives Chats</span>
+        <span>Chat Rooms</span>
         <IconButton className={cx('add-btn')} onClick={handleOpenAddRoom}>
           <FontAwesomeIcon icon={faPlus} className={cx('icon')} />
         </IconButton>

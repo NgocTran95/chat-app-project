@@ -12,14 +12,14 @@ import styles from './LoginForm.module.scss';
 import { addUsers } from '~/firebase/services';
 import { validateLoginSchema } from '~/validateForm/validateSchema';
 import { auth } from '~/firebase/config';
+
 const fbProvider = new FacebookAuthProvider();
 const ggProvider = new GoogleAuthProvider();
 const cx = classNames.bind(styles);
 
 function LoginForm({ setIsLogin }) {
   const [isShowPassWord, setIsShowPassword] = useState(false);
-  const [invalidLogin, setInvalidLogin] = useState(false)
-
+  const [ErrorLogin, setErrorLogin] = useState({ error: false, msg: '' });
   const {
     register,
     handleSubmit,
@@ -35,30 +35,33 @@ function LoginForm({ setIsLogin }) {
   };
 
   const handleLoginByEmail = (data) => {
-    const { email, password } = data
+    const { email, password } = data;
     signInWithEmailAndPassword(auth, email, password).catch((error) => {
       if (error.code === 'auth/user-not-found') {
-        setInvalidLogin(true)
+        setErrorLogin({ error: true, msg: 'User not found, please try again!' });
       }
-    })
+      if (error.code === 'auth/wrong-password') {
+        setErrorLogin({ error: true, msg: 'Wrong password, please try again!' });
+      }
+    });
   };
   return (
     <div className={cx('container')}>
       <h3 className={cx('title')}>Log In</h3>
-      {invalidLogin && <p className={cx('error-signin-msg')}>Wrong email or password, please try again!</p>}
-      <form className={cx('form')} onSubmit={handleSubmit(handleLoginByEmail)}>
+      {ErrorLogin.error && <p className={cx('error-signin-msg')}>{ErrorLogin.msg}</p>}
+      <form className={cx('form')} onSubmit={handleSubmit(handleLoginByEmail)} id="login-form">
         <Box sx={{ display: 'flex', alignItems: 'flex-end' }} className={cx('form-control')}>
           <Email sx={{ color: 'action.active', mr: 1, my: 0.5 }} className={cx('form-control-icon')} />
           <TextField
             id="email"
-            name='email'
+            name="email"
             type="email"
             label="Email"
             variant="standard"
             fullWidth
             {...register('email')}
             error={!!errors.email}
-            onFocus={() => setInvalidLogin(false)}
+            onFocus={() => setErrorLogin({ error: false, msg: '' })}
           />
           {<p className={cx('error-msg')}>{errors.email?.message}</p>}
         </Box>
@@ -70,11 +73,11 @@ function LoginForm({ setIsLogin }) {
             </InputLabel>
             <Input
               id="password"
-              name='password'
+              name="password"
               type={isShowPassWord ? 'text' : 'password'}
               {...register('password')}
               error={!!errors.password}
-              onFocus={() => setInvalidLogin(false)}
+              onFocus={() => setErrorLogin({ error: false, msg: '' })}
               endAdornment={
                 <InputAdornment position="end">
                   <IconButton
@@ -89,7 +92,12 @@ function LoginForm({ setIsLogin }) {
           </FormControl>
           {<p className={cx('error-msg')}>{errors.password?.message}</p>}
         </Box>
-        <ButtonBase className={cx('login-btn')} onClick={handleSubmit(handleLoginByEmail)}>
+        <ButtonBase
+          type="submit"
+          form="login-form"
+          className={cx('login-btn')}
+          onClick={handleSubmit(handleLoginByEmail)}
+        >
           Log In
         </ButtonBase>
       </form>

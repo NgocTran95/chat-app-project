@@ -8,7 +8,7 @@ import { useFireStore } from '~/hooks/useFireStore';
 
 const cx = classNames.bind(styles);
 function ChatRoom({ name, id }) {
-  const { setSelectedRoomId, selectedRoomId, emailUser } = useContext(AppContext);
+  const { setSelectedRoomId, selectedRoomId } = useContext(AppContext);
 
   // Got last message in this room
   const messagesCondition = useMemo(() => {

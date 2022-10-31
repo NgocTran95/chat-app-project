@@ -23,7 +23,9 @@
 .error-signin-msg {
   position: absolute;
   top: 75px;
-  left: 75px;
+  left: 0;
+  width: 100%;
+  text-align: center;
   font-size: 1.4rem;
   font-weight: 500;
   color: red;

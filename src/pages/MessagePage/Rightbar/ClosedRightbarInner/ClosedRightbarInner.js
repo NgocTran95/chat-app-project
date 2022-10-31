@@ -18,7 +18,7 @@ import { AppContext } from '~/Context/AppProvider';
 import { AuthContext } from '~/Context/AuthProvider';
 const cx = classNames.bind(styles);
 function ClosedRightbarInner({ handleToggleRightBar }) {
-  const { members } = useContext(AppContext)
+  const { modifiedMembers } = useContext(AppContext)
   const { uid } = useContext(AuthContext)
   return (
     <div className={cx('inner')}>
@@ -47,7 +47,7 @@ function ClosedRightbarInner({ handleToggleRightBar }) {
           <h5 className={cx('members-title')}>People</h5>
         </header>
         <div className={cx('member-list')}>
-          {members
+          {modifiedMembers
             .filter((member) => member.uid !== uid)
             .map((member) => {
               const { uid, displayName, photoURL, status } = member;

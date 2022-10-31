@@ -15,9 +15,9 @@ import { formatDate } from '~/utilities';
 const cx = classNames.bind(styles);
 function ChatWindow() {
   const [messageValue, setMessageValue] = useState('');
-  const { selectedRoom, selectedRoomId, members, messages } = useContext(AppContext);
+  const { selectedRoom, selectedRoomId, modifiedMembers, messages } = useContext(AppContext);
   const { uid, photoURL, displayName } = useContext(AuthContext);
-  const { emailUser } = useContext(AppContext)
+  const { emailUserDisplayName } = useContext(AppContext)
   if (selectedRoomId === '')
     return (
       <div className={cx('container')}>
@@ -33,7 +33,7 @@ function ChatWindow() {
       text: messageValue,
       uid,
       photoURL,
-      displayName: displayName || emailUser[0].displayName,
+      displayName: displayName || emailUserDisplayName,
       roomId: selectedRoomId,
       createAt: serverTimestamp(),
     });
@@ -46,8 +46,8 @@ function ChatWindow() {
           <p className={cx('name')}>{name}</p>
           <p className={cx('desc')}>{description}</p>
         </div>
-        <AvatarGroup max={4} total={members.length}>
-          {members.map((member) => (
+        <AvatarGroup max={4} total={modifiedMembers.length}>
+          {modifiedMembers.map((member) => (
             <Avatar key={member.id} src={member.photoURL} alt={member.displayName} />
           ))}
         </AvatarGroup>

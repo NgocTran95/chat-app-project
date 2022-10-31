@@ -4,16 +4,30 @@ import { faPenToSquare } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Avatar, IconButton } from '@mui/material';
 
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import { AppContext } from '~/Context/AppProvider';
 import { formatDate } from '~/utilities';
+import { updateDoc, doc, collection } from 'firebase/firestore';
+import { db } from '~/firebase/config';
 
 const cx = classNames.bind(styles);
 function RoomInfo() {
+  const [isChangingRoomName, setIsChangingRoomName] = useState(false)
+  const [newRoomName, setNewRoomName] = useState('');
   const { selectedRoom, selectedRoomId, messages } = useContext(AppContext);
+  
   if (selectedRoomId === '') return;
   const { name, members } = selectedRoom;
-  const lastMessage = messages[messages.length - 1]
+  const lastMessage = messages[messages.length - 1];
+
+  const handleChangeRoomName = (e) => {
+    e.preventDefault();
+    if (newRoomName !== '') {
+      const roomRef = doc(collection(db, 'rooms'), `${selectedRoomId}`);
+      updateDoc(roomRef, { name: newRoomName });
+    }
+    setIsChangingRoomName(false);
+  };
   return (
     <div className={cx('container')}>
       <div className={cx('avatar')}>
@@ -25,8 +39,21 @@ function RoomInfo() {
       </div>
       <div className={cx('details')}>
         <div className={cx('name')}>
-          <h4>{name}</h4>
-          <IconButton className={cx('fix-btn')}>
+          {isChangingRoomName ? (
+            <form onSubmit={handleChangeRoomName}>
+              <input
+                autoFocus
+                type="text"
+                className={cx('change-name-input')}
+                defaultValue={name}
+                onChange={(e) => setNewRoomName(e.target.value)}
+                value={newRoomName}
+              />
+            </form>
+          ) : (
+            <h4>{name}</h4>
+          )}
+          <IconButton className={cx('fix-btn')} onClick={() => setIsChangingRoomName(true)}>
             <FontAwesomeIcon icon={faPenToSquare} />
           </IconButton>
         </div>

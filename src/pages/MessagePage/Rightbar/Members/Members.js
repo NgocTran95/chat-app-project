@@ -11,8 +11,10 @@ import { AuthContext } from '~/Context/AuthProvider';
 const cx = classNames.bind(styles);
 function Members() {
   const [expanded, setExpanded] = useState(true);
-  const { members, setIsOpenInviteMember } = useContext(AppContext)
+  const { modifiedMembers, setIsOpenInviteMember } = useContext(AppContext)
   const { uid } = useContext(AuthContext)
+
+  // Toggle list
   const handleToggleList = () => {
     setExpanded((prev) => !prev);
   };
@@ -30,7 +32,7 @@ function Members() {
         </div>
       </header>
       <div className={cx('members', expanded ? 'show' : '')}>
-        {members
+        {modifiedMembers
           .filter((member) => member.uid !== uid)
           .map((member) => (
             <Member key={member.uid} {...member} />

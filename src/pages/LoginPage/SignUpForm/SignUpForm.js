@@ -24,7 +24,7 @@ function SignUpForm({ setIsLogin }) {
     formState: { errors },
   } = useForm({ resolver: yupResolver(validateSignUpSchema) });
 
-  const handleSignUpByEmail = async (data) => {
+  const handleSignUpByEmail = (data) => {
     const { email, password, username } = data;
     createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
@@ -34,6 +34,7 @@ function SignUpForm({ setIsLogin }) {
           photoURL: userCredential.user.photoURL,
           uid: userCredential.user.uid,
           providerId: userCredential.providerId,
+          status: 'Online',
           keywords: generateKeyWords(username?.toLowerCase()),
           createAt: serverTimestamp(),
         });
@@ -49,7 +50,7 @@ function SignUpForm({ setIsLogin }) {
     <div className={cx('container')}>
       <h3 className={cx('title')}>Sign Up</h3>
       {isEmailUsed && <p className={cx('error-signup-msg')}>Account with this email is already exists</p>}
-      <form className={cx('form')} onSubmit={handleSubmit(handleSignUpByEmail)}>
+      <form className={cx('form')} onSubmit={handleSubmit(handleSignUpByEmail)} id="signup-form">
         <Box sx={{ display: 'flex', alignItems: 'flex-end' }} className={cx('form-control')}>
           <Email sx={{ color: 'action.active', mr: 1, my: 0.5 }} className={cx('form-control-icon')} />
           <TextField
@@ -131,7 +132,7 @@ function SignUpForm({ setIsLogin }) {
           </FormControl>
           {<p className={cx('error-msg')}>{errors.confirmPassword?.message}</p>}
         </Box>
-        <ButtonBase className={cx('login-btn')} onClick={handleSubmit(handleSignUpByEmail)}>
+        <ButtonBase type="submit" form='signup-form' className={cx('login-btn')} onClick={handleSubmit(handleSignUpByEmail)}>
           Sign Up
         </ButtonBase>
       </form>
