@@ -7,54 +7,64 @@ import { AuthContext } from './AuthProvider';
 export const AppContext = createContext();
 
 function AppProvider({ children }) {
-  const [isOpenAddRoom, setIsOpenAddRoom] = useState(false);
+  const [isOpenAddGroup, setIsOpenAddGroup] = useState(false);
+  const [isOpenEditGroup, setIsOpenEditGroup] = useState(false);
+  const [selectedGroupId, setSelectedGroupId] = useState('');
   const [isOpenInviteMember, setIsOpenInviteMember] = useState(false);
-  const [selectedRoomId, setSelectedRoomId] = useState('');
+  const [isOpenRemoveMember, setIsOpenRemoveMember] = useState(false);
+  const [removeMember, setRemoveMember] = useState(null);
+  const [isOpenLeaveGroup, setIsOpenLeaveGroup] = useState(false);
+  const [isOpenDeleteGroup, setIsOpenDeleteGroup] = useState(false);
+  const [isOpenLogOut, setIsOpenLogOut] = useState(false);
   const { uid } = useContext(AuthContext);
 
-  // Reset selected room  after logout
+  // Reset selected group  after logout
   useEffect(() => {
-    setSelectedRoomId('');
+    setSelectedGroupId('');
   }, [uid]);
 
-  // Get rooms that user join
-  const roomsCondition = useMemo(() => {
+  // Get groups that user join
+  const groupsCondition = useMemo(() => {
     return {
       fieldName: 'members',
       operator: 'array-contains',
       compareValue: uid,
     };
   }, [uid]);
-  const rooms = useFireStore('rooms', roomsCondition);
-  //  Get room to chat
-  const selectedRoom = useMemo(() => {
-    return rooms.find((room) => room.id === selectedRoomId) || {};
-  }, [selectedRoomId, rooms]);
-
-  // Get members inside choosen room
+  const groups = useFireStore('groups', groupsCondition);
+  //  Get group to chat
+  const selectedGroup = useMemo(() => {
+    return groups.find((group) => group.id === selectedGroupId) || {};
+  }, [selectedGroupId, groups]);
+  const isAdmin = useMemo(() => {
+    if (!!selectedGroup.admins) {
+      return selectedGroup.admins.includes(uid);
+    }
+  }, [selectedGroup, uid]);
+  // Get members inside choosen group
   const membersCondition = useMemo(() => {
     return {
       fieldName: 'uid',
       operator: 'in',
-      compareValue: selectedRoom.members,
+      compareValue: selectedGroup.members,
     };
-  }, [selectedRoom.members]);
+  }, [selectedGroup.members]);
   const members = useFireStore('users', membersCondition);
   const modifiedMembers = useMemo(() => {
-    const onlineMembers = members.filter(member => member.status === 'Online')
-    const awayMembers = members.filter(member => member.status === 'Away')
-    const offlineMembers = members.filter(member => member.status === 'Offline')
-    return [...onlineMembers, ...awayMembers, ...offlineMembers]
-  }, [members])
+    const onlineMembers = members.filter((member) => member.status === 'Online');
+    const awayMembers = members.filter((member) => member.status === 'Away');
+    const offlineMembers = members.filter((member) => member.status === 'Offline');
+    return [...onlineMembers, ...awayMembers, ...offlineMembers];
+  }, [members]);
 
-  // Get messages inside choosen room
+  // Get messages inside choosen group
   const messagesCondition = useMemo(() => {
     return {
-      fieldName: 'roomId',
+      fieldName: 'groupId',
       operator: '==',
-      compareValue: selectedRoomId,
+      compareValue: selectedGroupId,
     };
-  }, [selectedRoomId]);
+  }, [selectedGroupId]);
   const messages = useFireStore('messages', messagesCondition);
 
   // Create this field because firebase does not support getting displayName, photo URL when login by Email
@@ -70,32 +80,45 @@ function AppProvider({ children }) {
   const users = useFireStore('users', userCondition);
   // Get email user displayname
   const emailUserDisplayName = users[0]?.displayName;
-  const userId = users[0]?.id
+  const userId = users[0]?.id;
 
   // Set online status after login
   useEffect(() => {
     if (userId) {
       updateDoc(doc(db, 'users', userId), {
-        status: 'Online'
-      })
+        status: 'Online',
+      });
     }
-  }, [userId])
+  }, [userId]);
 
   return (
     <AppContext.Provider
       value={{
-        rooms,
-        isOpenAddRoom,
-        setIsOpenAddRoom,
-        selectedRoomId,
-        setSelectedRoomId,
-        selectedRoom,
+        groups,
+        isOpenAddGroup,
+        setIsOpenAddGroup,
+        isOpenEditGroup,
+        setIsOpenEditGroup,
+        selectedGroupId,
+        setSelectedGroupId,
+        selectedGroup,
         modifiedMembers,
         isOpenInviteMember,
         setIsOpenInviteMember,
+        isOpenRemoveMember,
+        setIsOpenRemoveMember,
+        removeMember,
+        setRemoveMember,
+        isOpenLeaveGroup,
+        setIsOpenLeaveGroup,
+        isOpenLogOut,
+        setIsOpenLogOut,
+        isOpenDeleteGroup,
+        setIsOpenDeleteGroup,
         messages,
         emailUserDisplayName,
-        userId
+        userId,
+        isAdmin,
       }}
     >
       {children}

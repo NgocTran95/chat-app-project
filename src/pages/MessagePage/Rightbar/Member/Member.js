@@ -5,9 +5,13 @@ import classNames from 'classnames/bind';
 import styles from './Member.module.scss';
 import ProfileAvatar from '~/components/ProfileAvatar';
 import { statusColors } from '~/Constants';
+import { useContext } from 'react';
+import { AppContext } from '~/Context/AppProvider';
 
 const cx = classNames.bind(styles);
-function Member({ photoURL, displayName, status }) {
+function Member({ photoURL, displayName, status, uid }) {
+  const { isAdmin, setIsOpenRemoveMember, setRemoveMember } = useContext(AppContext);
+
   return (
     <div className={cx('container')}>
       <ProfileAvatar name={displayName} image={photoURL} status={status} width={36} height={36} />
@@ -21,9 +25,17 @@ function Member({ photoURL, displayName, status }) {
         <IconButton className={cx('action-btn', 'microphone')}>
           <FontAwesomeIcon icon={faMicrophoneSlash} className={cx('icon')} />
         </IconButton>
-        <IconButton className={cx('action-btn')}>
-          <FontAwesomeIcon icon={faCircleXmark} className={cx('icon')} />
-        </IconButton>
+        {isAdmin && (
+          <IconButton
+            className={cx('action-btn')}
+            onClick={() => {
+              setIsOpenRemoveMember(true);
+              setRemoveMember({ displayName, uid });
+            }}
+          >
+            <FontAwesomeIcon icon={faCircleXmark} className={cx('icon')} />
+          </IconButton>
+        )}
       </div>
     </div>
   );

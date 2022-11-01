@@ -2,7 +2,7 @@ import styles from './Leftbar.module.scss';
 import classNames from 'classnames/bind';
 import logo from '~/assets/images/logo.png';
 import Profile from './Profile';
-import RoomList from './RoomList';
+import GroupList from './GroupList';
 
 const cx = classNames.bind(styles);
 function Leftbar() {
@@ -19,7 +19,7 @@ function Leftbar() {
           </div>
         </div>
         <Profile />
-        <RoomList />
+        <GroupList />
       </div>
     </div>
   );

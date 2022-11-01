@@ -93,13 +93,13 @@ async function fetchUserList(search, curMembers) {
 //  React Component InviteMemberModal
 
 function InviteMemberModal() {
-  const { isOpenInviteMember, setIsOpenInviteMember, selectedRoom, selectedRoomId } = useContext(AppContext);
+  const { isOpenInviteMember, setIsOpenInviteMember, selectedGroup, selectedGroupId } = useContext(AppContext);
   const [options, setOptions] = useState([]);
   const { handleSubmit } = useForm();
 
   const handleInviteMember = () => {
-    const roomRef = doc(collection(db, 'rooms'), `${selectedRoomId}`);
-    updateDoc(roomRef, {members: [...selectedRoom.members, ...options.map((option) => option.value)]});
+    const groupRef = doc(db, 'groups', selectedGroupId);
+    updateDoc(groupRef, { members: [...selectedGroup.members, ...options.map((option) => option.value)] });
     setIsOpenInviteMember(false);
     setOptions([]);
   };
@@ -132,7 +132,7 @@ function InviteMemberModal() {
             <DebounceAutocomplete
               fetchOptions={fetchUserList}
               onChange={(event, value) => setOptions(value)}
-              curMembers={selectedRoom.members}
+              curMembers={selectedGroup.members}
             />
             <div className={cx('btn-groups')}>
               <ButtonBase variant="outlined" className={cx('btn')} onClick={handleCloseModal}>

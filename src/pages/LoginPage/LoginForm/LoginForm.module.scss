@@ -107,11 +107,11 @@
     }
   }
   .google {
-    color: #ea4335;
-    border: 1px solid #ea4335;
+    color: var(--danger-color);
+    border: 1px solid var(--danger-color);
     &:hover {
       color: #ffffff;
-      background-color: #ea4335;
+      background-color: var(--danger-color);
     }
   }
 }

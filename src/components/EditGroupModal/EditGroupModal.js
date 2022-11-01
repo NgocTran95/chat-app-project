@@ -7,15 +7,13 @@ import { useForm } from 'react-hook-form';
 
 import { AppContext } from '~/Context/AppProvider';
 import classNames from 'classnames/bind';
-import styles from './AddRoomModal.module.scss';
-import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
+import styles from './EditGroupModal.module.scss';
+import { doc, updateDoc } from 'firebase/firestore';
 import { db } from '~/firebase/config';
-import { AuthContext } from '~/Context/AuthProvider';
 
 const cx = classNames.bind(styles);
-function AddRoomModal() {
-  const { isOpenAddRoom, setIsOpenAddRoom } = useContext(AppContext);
-  const { uid } = useContext(AuthContext)
+function EditGroupModal() {
+  const { isOpenEditGroup, setIsOpenEditGroup, selectedGroupId } = useContext(AppContext);
   const {
     register,
     handleSubmit,
@@ -23,31 +21,32 @@ function AddRoomModal() {
     formState: { errors },
   } = useForm();
 
-  const handleAddRoom = (data) => {
-    addDoc(collection(db, 'rooms'), {
-      name: data.roomName,
-      description: data.roomDesc,
-      members: [uid],
-      createAt: serverTimestamp()
-    })
-    reset({
-      roomName: '',
-      roomDesc: '',
+  const handleEditGroup = (data) => {
+    const groupRef = doc(db, 'groups', selectedGroupId);
+    updateDoc(groupRef, {
+      name: data.groupName,
+      description: data.groupDesc,
+      avatarURL: data.groupAvatar,
     });
-    setIsOpenAddRoom(false);
+    reset({
+      groupName: '',
+      groupDesc: '',
+      groupAvatar: '',
+    });
+    setIsOpenEditGroup(false);
   };
   const handleCloseModal = () => {
     reset({
       errors: false,
     });
-    setIsOpenAddRoom(false);
+    setIsOpenEditGroup(false);
   };
 
   return (
     <Modal
       aria-labelledby="transition-modal-title"
       aria-describedby="transition-modal-description"
-      open={isOpenAddRoom}
+      open={isOpenEditGroup}
       onClose={handleCloseModal}
       closeAfterTransition
       BackdropComponent={Backdrop}
@@ -55,47 +54,62 @@ function AddRoomModal() {
         timeout: 500,
       }}
     >
-      <Fade in={isOpenAddRoom}>
+      <Fade in={isOpenEditGroup}>
         <Box className={cx('container')}>
           <header className={cx('header')}>
-            <h4>Add Room</h4>
+            <h4>Edit Group</h4>
             <IconButton className={cx('close-btn')} onClick={handleCloseModal}>
               <FontAwesomeIcon icon={faClose} />
             </IconButton>
           </header>
-          <Box component="form" className={cx('form')} onSubmit={handleSubmit(handleAddRoom)}>
+          <Box component="form" className={cx('form')} id="editgroup-form" onSubmit={handleSubmit(handleEditGroup)}>
             <TextField
               required
               variant="standard"
-              id="roomName"
-              name="roomName"
-              label="Room Name"
+              id="groupName"
+              name="groupName"
+              label="Group Name"
               fullWidth
               margin="dense"
-              {...register('roomName', { required: true })}
-              error={errors.roomName?.type === 'required'}
+              {...register('groupName', { required: true })}
+              error={errors.groupName?.type === 'required'}
               className={cx('input')}
             />
-            {errors.roomName?.type === 'required' && (
+            {errors.groupName?.type === 'required' && (
               <Typography color="red" role="alert">
                 First name is required
               </Typography>
             )}
             <TextField
               variant="standard"
-              id="roomDesc"
-              name="roomDesc"
-              label="Description"
+              id="groupDesc"
+              name="groupDesc"
+              label="Description (Optional)"
               fullWidth
               margin="dense"
-              {...register('roomDesc')}
+              {...register('groupDesc')}
+            />
+            <TextField
+              variant="standard"
+              id="groupAvatar"
+              name="groupAvatar"
+              label="Avatar URL (Optional)"
+              fullWidth
+              margin="dense"
+              {...register('groupAvatar')}
             />
             <div className={cx('btn-groups')}>
               <ButtonBase variant="outlined" className={cx('btn')} onClick={handleCloseModal}>
                 Cancel
               </ButtonBase>
-              <ButtonBase variant="contained" className={cx('btn', 'add-btn')} onClick={handleSubmit(handleAddRoom)}>
-                Add
+              <ButtonBase
+                variant="contained"
+                type="submit"
+                form="editgroup-form"
+                className={cx('btn', 'edit-btn')}
+                onClick={handleSubmit(handleEditGroup)}
+              >
+                Edit
               </ButtonBase>
             </div>
           </Box>
@@ -105,4 +119,4 @@ function AddRoomModal() {
   );
 }
 
-export default AddRoomModal;
+export default EditGroupModal;

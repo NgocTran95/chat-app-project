@@ -5,7 +5,7 @@ import { ButtonBase, IconButton } from '@mui/material';
 import classNames from 'classnames/bind';
 
 import styles from './Rightbar.module.scss';
-import RoomInfo from './RoomInfo';
+import GroupInfo from './GroupInfo';
 import Members from './Members';
 import ChatFiles from './ChatFiles';
 import ClosedRightbarInner from './ClosedRightbarInner';
@@ -13,12 +13,12 @@ import { AppContext } from '~/Context/AppProvider';
 
 const cx = classNames.bind(styles);
 function Rightbar() {
-  const { selectedRoomId } = useContext(AppContext)
+  const { selectedGroupId } = useContext(AppContext);
   const [isOpen, setIsOpen] = useState(false);
   const handleToggleRightBar = () => {
     setIsOpen((prev) => !prev);
   };
-  if (selectedRoomId === '') return
+  if (selectedGroupId === '') return;
   return (
     <div className={cx('container', isOpen ? '' : 'close')}>
       {isOpen ? (
@@ -29,7 +29,7 @@ function Rightbar() {
             </IconButton>
             <p>Chat details</p>
           </header>
-          <RoomInfo />
+          <GroupInfo />
           <div className={cx('actions')}>
             <ButtonBase className={cx('call-btn', 'voice-chat')}>
               <FontAwesomeIcon icon={faPhone} className={cx('call-icon')} />
@@ -44,7 +44,7 @@ function Rightbar() {
           <ChatFiles />
         </>
       ) : (
-        <ClosedRightbarInner handleToggleRightBar={handleToggleRightBar}/>
+        <ClosedRightbarInner handleToggleRightBar={handleToggleRightBar} />
       )}
     </div>
   );

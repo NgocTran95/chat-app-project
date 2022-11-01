@@ -1,19 +1,19 @@
 import classNames from 'classnames/bind';
 import { useContext, useMemo } from 'react';
 
-import styles from './ChatRoom.module.scss';
-import ProfileAvatar from '~/components/ProfileAvatar';
+import styles from './ChatGroup.module.scss';
 import { AppContext } from '~/Context/AppProvider';
 import { useFireStore } from '~/hooks/useFireStore';
+import { Avatar } from '@mui/material';
 
 const cx = classNames.bind(styles);
-function ChatRoom({ name, id }) {
-  const { setSelectedRoomId, selectedRoomId } = useContext(AppContext);
+function ChatGroup({ name, id, avatarURL }) {
+  const { setSelectedGroupId, selectedGroupId } = useContext(AppContext);
 
-  // Got last message in this room
+  // Got last message in this group
   const messagesCondition = useMemo(() => {
     return {
-      fieldName: 'roomId',
+      fieldName: 'groupId',
       operator: '==',
       compareValue: id,
     };
@@ -23,18 +23,18 @@ function ChatRoom({ name, id }) {
     return messages[messages.length - 1];
   }, [messages]);
   return (
-    <div className={cx('container', `${id === selectedRoomId ? 'active' : ''}`)} onClick={() => setSelectedRoomId(id)}>
-      <ProfileAvatar
-        status="Online"
-        image="https://d1nslcd7m2225b.cloudfront.net/Pictures/1024x536/2/4/4/1230244_Minions+3.jpg"
-        width={50}
-        height={50}
-      />
+    <div
+      className={cx('container', `${id === selectedGroupId ? 'active' : ''}`)}
+      onClick={() => setSelectedGroupId(id)}
+    >
+      <Avatar src={avatarURL} sx={{ width: 50, height: 50}} alt={name}>{avatarURL ? '' : name.charAt(0).toUpperCase()}</Avatar>
       <div className={cx('infor')}>
         <div className={cx('group-name')}>{name}</div>
         {!!lastMessages && (
           <p className={cx('last-msg')}>
-            <span className={cx('person')}>{lastMessages?.displayName?.slice(0, lastMessages?.displayName?.indexOf(' '))}: </span>
+            <span className={cx('person')}>
+              {lastMessages?.displayName?.slice(0, lastMessages?.displayName?.indexOf(' '))}:{' '}
+            </span>
             <span className={cx('content')}>{lastMessages?.text}</span>
           </p>
         )}
@@ -44,4 +44,4 @@ function ChatRoom({ name, id }) {
   );
 }
 
-export default ChatRoom;
+export default ChatGroup;

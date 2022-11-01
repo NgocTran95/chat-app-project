@@ -11,20 +11,22 @@ import { AuthContext } from '~/Context/AuthProvider';
 import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
 import { db } from '~/firebase/config';
 import { formatDate } from '~/utilities';
+import EmojiPicker from 'emoji-picker-react';
 
 const cx = classNames.bind(styles);
 function ChatWindow() {
   const [messageValue, setMessageValue] = useState('');
-  const { selectedRoom, selectedRoomId, modifiedMembers, messages } = useContext(AppContext);
+  const [isShowEmoji, setIsShowEmoji] = useState(false);
+  const { selectedGroup, selectedGroupId, modifiedMembers, messages } = useContext(AppContext);
   const { uid, photoURL, displayName } = useContext(AuthContext);
-  const { emailUserDisplayName } = useContext(AppContext)
-  if (selectedRoomId === '')
+  const { emailUserDisplayName } = useContext(AppContext);
+  if (selectedGroupId === '')
     return (
       <div className={cx('container')}>
         <p className={cx('notification')}>Select a chat to messaging</p>
       </div>
     );
-  const { name, description } = selectedRoom;
+  const { name, description } = selectedGroup;
 
   const handleSendMessage = (e) => {
     e.preventDefault();
@@ -34,10 +36,15 @@ function ChatWindow() {
       uid,
       photoURL,
       displayName: displayName || emailUserDisplayName,
-      roomId: selectedRoomId,
+      groupId: selectedGroupId,
       createAt: serverTimestamp(),
     });
     setMessageValue('');
+  };
+
+  const handleEmojiClick = (emojiData) => {
+    setMessageValue((prevMsg) => prevMsg + emojiData.emoji);
+    setIsShowEmoji(false);
   };
   return (
     <div className={cx('container')}>
@@ -78,6 +85,7 @@ function ChatWindow() {
             );
           })}
         </div>
+        {isShowEmoji && <div className={cx('emoji')}><EmojiPicker onEmojiClick={handleEmojiClick} /></div>}
         <form className={cx('reply-field')} onSubmit={handleSendMessage}>
           <input
             className={cx('reply-input')}
@@ -88,7 +96,7 @@ function ChatWindow() {
             value={messageValue}
           />
           <div className={cx('reply-btns')}>
-            <IconButton className={cx('reply-btn')}>
+            <IconButton className={cx('reply-btn')} onClick={() => setIsShowEmoji((prev) => !prev)}>
               <FontAwesomeIcon icon={faFaceGrinWide} className={cx('icon')} />
             </IconButton>
             <IconButton className={cx('reply-btn')}>

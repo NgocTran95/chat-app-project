@@ -1,47 +1,46 @@
 .container {
-    padding-top: 30px;
-    padding-bottom: 30px;
-    display: flex;
-    align-items: center;
+  padding-top: 30px;
+  padding-bottom: 30px;
+  display: flex;
+  align-items: center;
 }
 
 .avatar {
-    padding: 7px;
-    position: relative;
+  padding: 7px;
+  position: relative;
 }
 
 .info {
-    padding-left: 15px;
-    flex: 1;
+  padding-left: 15px;
+  flex: 1;
 }
 
 .name {
-    font-size: 1.8rem;
-    max-width: 200px;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    overflow: hidden;
+  font-size: 1.8rem;
+  max-width: 200px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 }
 
 .desc {
-    font-size: 1.2rem;
-    color: var(--blur-text-color);
-    max-width: 200px;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    overflow: hidden;
+  font-size: 1.2rem;
+  color: var(--blur-text-color);
+  max-width: 200px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 }
 
 .status {
-    font-size: 1.2rem;
-    color: var(--primary-color);
+  font-size: 1.2rem;
+  color: var(--primary-color);
 }
 
 .logout {
-    padding: 15px !important;
-    background-color: rgba(0, 0, 0, 0.04) !important;
+  padding: 15px !important;
 }
 
 .icon {
-    color: #ea4335
+  color: var(--danger-color);
 }
