@@ -2,7 +2,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faSearch } from '@fortawesome/free-solid-svg-icons';
 import { IconButton } from '@mui/material';
 import classNames from 'classnames/bind';
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 
 import ChatGroup from './ChatGroup';
 import styles from './GroupList.module.scss';
@@ -10,6 +10,7 @@ import { AppContext } from '~/Context/AppProvider';
 const cx = classNames.bind(styles);
 function GroupList() {
   const { groups, setIsOpenAddGroup } = useContext(AppContext);
+  const [searchValue, setSearchValue] = useState('');
   const handleOpenAddGroup = () => {
     setIsOpenAddGroup(true);
   };
@@ -23,15 +24,24 @@ function GroupList() {
         </IconButton>
       </header>
       <form className={cx('search-field')}>
-        <input className={cx('search-input')} placeholder="Search people..." />
-        <IconButton className={cx('search-btn')}>
+        <input
+          className={cx('search-input')}
+          placeholder="Search groups..."
+          value={searchValue}
+          onChange={(e) => setSearchValue(e.target.value)}
+        />
+        <div className={cx('search-btn')}>
           <FontAwesomeIcon icon={faSearch} className={cx('search-icon')} />
-        </IconButton>
+        </div>
       </form>
       <div className={cx('groups')}>
-        {groups.map((group) => (
-          <ChatGroup key={group.id} {...group} />
-        ))}
+        {searchValue.trim() === ''
+          ? groups.map((group) => <ChatGroup key={group.id} {...group} />)
+          : groups
+              .filter((group) => group.name.toLowerCase().includes(searchValue.trim().toLowerCase()))
+              .map((group) => {
+                <ChatGroup key={group.id} {...group} />;
+              })}
       </div>
     </div>
   );

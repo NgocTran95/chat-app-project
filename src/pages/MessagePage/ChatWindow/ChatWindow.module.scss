@@ -6,14 +6,13 @@
   overflow: hidden;
   display: flex;
   flex-direction: column;
+  background-color: rgba(118, 192,13, 0.1);
 }
 
-.notification {
+.nonchat-bg {
   margin: auto;
-  background-color: rgba(0, 0, 0, 0.3);
-  color: #ffffff;
-  padding: 5px 15px;
-  border-radius: 24px;
+  width: 400px;
+  border-radius: 50%;
 }
 
 .header {
@@ -61,6 +60,21 @@
   margin-top: 20px;
   margin-right: -10px;
   padding-right: 10px;
+}
+
+.notification {
+  margin-top: 5px;
+  max-width: 100%;
+  .notification-text {
+    width: fit-content;
+    font-size: 1.4rem;
+    font-weight: 400;
+    margin: auto;
+    padding: 4px 15px;
+    background-color: rgba(0, 0, 0, 0.2);
+    color: #ffffff;
+    border-radius: 20px;
+  }
 }
 
 .msg-container {

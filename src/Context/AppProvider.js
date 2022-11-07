@@ -1,4 +1,4 @@
-import { doc, updateDoc } from 'firebase/firestore';
+import { doc, updateDoc, serverTimestamp } from 'firebase/firestore';
 import { createContext, useContext, useEffect, useMemo, useState } from 'react';
 import { db } from '~/firebase/config';
 import { useFireStore } from '~/hooks/useFireStore';
@@ -7,6 +7,7 @@ import { AuthContext } from './AuthProvider';
 export const AppContext = createContext();
 
 function AppProvider({ children }) {
+  const [userId, setUserId] = useState('');
   const [isOpenAddGroup, setIsOpenAddGroup] = useState(false);
   const [isOpenEditGroup, setIsOpenEditGroup] = useState(false);
   const [selectedGroupId, setSelectedGroupId] = useState('');
@@ -18,12 +19,24 @@ function AppProvider({ children }) {
   const [isOpenLogOut, setIsOpenLogOut] = useState(false);
   const { uid } = useContext(AuthContext);
 
-  // Reset selected group  after logout
+  // Set user offline when close tab
   useEffect(() => {
-    setSelectedGroupId('');
-  }, [uid]);
+    window.addEventListener('beforeunload', () => {
+      if (userId) {
+        updateDoc(doc(db, 'users', userId), { status: { state: 'Offline', last_changed: serverTimestamp() } });
+      }
+    });
+    return () => {
+      window.removeEventListener('beforeunload', () => {
+        if (userId) {
+          updateDoc(doc(db, 'users', userId), { status: { state: 'Offline', last_changed: serverTimestamp() } });
+        }
+      });
+    };
+    // eslint-disable-next-line
+  }, [userId]);
 
-  // Get groups that user join
+  // Get groups that user has joined
   const groupsCondition = useMemo(() => {
     return {
       fieldName: 'members',
@@ -32,15 +45,26 @@ function AppProvider({ children }) {
     };
   }, [uid]);
   const groups = useFireStore('groups', groupsCondition);
+  
+  // Reset selectedGroupId when member removed or leave
+  useEffect(() => {
+    if (!groups.map(group => group.id).includes(selectedGroupId)) {
+      setSelectedGroupId('')
+    }
+  }, [groups, selectedGroupId])
+  
   //  Get group to chat
   const selectedGroup = useMemo(() => {
     return groups.find((group) => group.id === selectedGroupId) || {};
   }, [selectedGroupId, groups]);
+
+  // Indentify user is admin or not
   const isAdmin = useMemo(() => {
     if (!!selectedGroup.admins) {
       return selectedGroup.admins.includes(uid);
     }
   }, [selectedGroup, uid]);
+
   // Get members inside choosen group
   const membersCondition = useMemo(() => {
     return {
@@ -50,10 +74,12 @@ function AppProvider({ children }) {
     };
   }, [selectedGroup.members]);
   const members = useFireStore('users', membersCondition);
+
+  // Arrange members depend on online/offline status
   const modifiedMembers = useMemo(() => {
-    const onlineMembers = members.filter((member) => member.status === 'Online');
-    const awayMembers = members.filter((member) => member.status === 'Away');
-    const offlineMembers = members.filter((member) => member.status === 'Offline');
+    const onlineMembers = members.filter((member) => member.status.state === 'Online');
+    const awayMembers = members.filter((member) => member.status.state === 'Away');
+    const offlineMembers = members.filter((member) => member.status.state === 'Offline');
     return [...onlineMembers, ...awayMembers, ...offlineMembers];
   }, [members]);
 
@@ -69,7 +95,8 @@ function AppProvider({ children }) {
 
   // Create this field because firebase does not support getting displayName, photo URL when login by Email
   // => get displayName from firestore (add doc when sign up) instead of from auth provider, photoURL set by default Avatar MUI component
-  // Get current user
+
+  // Get current user 
   const userCondition = useMemo(() => {
     return {
       fieldName: 'uid',
@@ -77,19 +104,19 @@ function AppProvider({ children }) {
       compareValue: uid,
     };
   }, [uid]);
-  const users = useFireStore('users', userCondition);
-  // Get email user displayname
-  const emailUserDisplayName = users[0]?.displayName;
-  const userId = users[0]?.id;
+  const currentUser = useFireStore('users', userCondition);
 
-  // Set online status after login
+  // Get email signup user displayname
+  const emailUserDisplayName = currentUser[0]?.displayName;
+
+  // Get current user id
   useEffect(() => {
-    if (userId) {
-      updateDoc(doc(db, 'users', userId), {
-        status: 'Online',
-      });
+    if (uid) {
+      setUserId(currentUser[0]?.id);
+    } else {
+      setUserId('')
     }
-  }, [userId]);
+  }, [currentUser, uid]);
 
   return (
     <AppContext.Provider
@@ -118,6 +145,7 @@ function AppProvider({ children }) {
         messages,
         emailUserDisplayName,
         userId,
+        setUserId,
         isAdmin,
       }}
     >

@@ -48,4 +48,7 @@
 .icon {
   color: var(--offline-status-color);
   font-size: 1.8rem;
+  &.remove:hover {
+    color: var(--danger-color);
+  }
 }

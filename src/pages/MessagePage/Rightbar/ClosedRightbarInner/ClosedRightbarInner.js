@@ -51,7 +51,7 @@ function ClosedRightbarInner({ handleToggleRightBar }) {
             .filter((member) => member.uid !== uid)
             .map((member) => {
               const { uid, displayName, photoURL, status } = member;
-              return <ProfileAvatar key={uid} name={displayName} image={photoURL} status={status} width={40} height={40} />;
+              return <ProfileAvatar key={uid} name={displayName} image={photoURL} status={status.state} width={40} height={40} />;
             })}
         </div>
       </div>

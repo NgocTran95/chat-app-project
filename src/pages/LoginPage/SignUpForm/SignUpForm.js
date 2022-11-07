@@ -34,7 +34,6 @@ function SignUpForm({ setIsLogin }) {
           photoURL: userCredential.user.photoURL,
           uid: userCredential.user.uid,
           providerId: userCredential.providerId,
-          status: 'Online',
           keywords: generateKeyWords(username?.toLowerCase()),
           createAt: serverTimestamp(),
         });

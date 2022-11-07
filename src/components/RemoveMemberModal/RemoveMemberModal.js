@@ -9,16 +9,31 @@ import classNames from 'classnames/bind';
 import styles from './RemoveMemberModal.module.scss';
 import { db } from '~/firebase/config';
 import { doc, updateDoc } from 'firebase/firestore';
+import { AuthContext } from '~/Context/AuthProvider';
+import { addNotifications } from '~/firebase/services';
 
 const cx = classNames.bind(styles);
 function RemoveMemberModal() {
-  const { isOpenRemoveMember, setIsOpenRemoveMember, removeMember, setRemoveMember, selectedGroup, selectedGroupId } =
-    useContext(AppContext);
+  const {
+    isOpenRemoveMember,
+    setIsOpenRemoveMember,
+    removeMember,
+    setRemoveMember,
+    selectedGroup,
+    selectedGroupId,
+    emailUserDisplayName,
+  } = useContext(AppContext);
+  const { uid, displayName } = useContext(AuthContext);
   const handleRemoveMember = () => {
     const groupRef = doc(db, 'groups', selectedGroupId);
+    // Remove member
     updateDoc(groupRef, {
       members: selectedGroup.members.filter((memberUid) => memberUid !== removeMember.uid),
     });
+
+    // Add notification
+    addNotifications(uid, `${displayName || emailUserDisplayName} has removed ${removeMember.displayName} from this group`, `${displayName || emailUserDisplayName}`)
+    
     setRemoveMember(null);
     setIsOpenRemoveMember(false);
   };

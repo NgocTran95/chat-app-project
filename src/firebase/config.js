@@ -7,13 +7,14 @@ import 'firebase/auth';
 import 'firebase/firestore';
 
 const firebaseConfig = {
-  apiKey: 'AIzaSyB8io5-KXfr5uGfaogQzBaGi6J9ZPA85Ws',
-  authDomain: 'realtime-chat-app-b36cb.firebaseapp.com',
-  projectId: 'realtime-chat-app-b36cb',
-  storageBucket: 'realtime-chat-app-b36cb.appspot.com',
-  messagingSenderId: '739793988288',
-  appId: '1:739793988288:web:50c587ff39e2bda689db25',
-  measurementId: 'G-YW8X8W9MR1',
+  apiKey: process.env.REACT_APP_API_KEY,
+  authDomain: process.env.REACT_APP_AUTH_DOMAIN,
+  projectId: process.env.REACT_APP_PROJECT_ID,
+  storageBucket: process.env.REACT_APP_STORAGE_BUCKET,
+  messagingSenderId: process.env.REACT_APP_MESSAGING_SENDER_ID,
+  appId: process.env.REACT_APP_APP_ID,
+  measurementId: process.env.REACT_APP_MEASUREMENT_ID,
+  databaseURL: process.env.REACT_APP_DATABASE_URL,
 };
 
 // Initialize Firebase

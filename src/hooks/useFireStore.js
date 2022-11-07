@@ -30,7 +30,9 @@ export const useFireStore = (collectionName, condition) => {
       }));
       setDocuments(documents);
     });
-    return unsubcribe
+    return () => {
+      unsubcribe()
+    }
   }, [collectionName, condition]);
   return documents; 
 };

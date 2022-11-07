@@ -5,17 +5,19 @@ import { Box } from '@mui/system';
 import { useContext } from 'react';
 import { useForm } from 'react-hook-form';
 
-import { AppContext } from '~/Context/AppProvider';
 import classNames from 'classnames/bind';
 import styles from './AddGroupModal.module.scss';
 import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
 import { db } from '~/firebase/config';
 import { AuthContext } from '~/Context/AuthProvider';
+import { AppContext } from '~/Context/AppProvider';
+import { addNotifications } from '~/firebase/services';
 
 const cx = classNames.bind(styles);
 function AddGroupModal() {
   const { isOpenAddGroup, setIsOpenAddGroup } = useContext(AppContext);
-  const { uid } = useContext(AuthContext);
+  const { uid, displayName } = useContext(AuthContext);
+  const { emailUserDisplayName } = useContext(AppContext);
   const {
     register,
     handleSubmit,
@@ -24,13 +26,14 @@ function AddGroupModal() {
   } = useForm();
 
   const handleAddGroup = (data) => {
+    // Create Group
     addDoc(collection(db, 'groups'), {
       name: data.groupName,
       description: data.groupDesc,
       avatarURL: data.groupAvatar,
       members: [uid],
       createAt: serverTimestamp(),
-      admins: [uid]
+      admins: [uid],
     });
     reset({
       groupName: '',
@@ -38,7 +41,11 @@ function AddGroupModal() {
       groupAvatar: '',
     });
     setIsOpenAddGroup(false);
+
+    // Add notification
+    addNotifications(uid, `${displayName || emailUserDisplayName} has created this group`, `${displayName || emailUserDisplayName}`)
   };
+
   const handleCloseModal = () => {
     reset({
       errors: false,

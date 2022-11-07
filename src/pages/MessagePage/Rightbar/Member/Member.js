@@ -14,11 +14,11 @@ function Member({ photoURL, displayName, status, uid }) {
 
   return (
     <div className={cx('container')}>
-      <ProfileAvatar name={displayName} image={photoURL} status={status} width={36} height={36} />
+      <ProfileAvatar name={displayName} image={photoURL} status={status.state} width={36} height={36} />
       <div className={cx('info')}>
         <h4 className={cx('name')}>{displayName}</h4>
-        <p className={cx('status')} style={{ color: statusColors[status] }}>
-          {status}
+        <p className={cx('status')} style={{ color: statusColors[status.state] }}>
+          {status.state}
         </p>
       </div>
       <div className={cx('actions')}>
@@ -33,7 +33,7 @@ function Member({ photoURL, displayName, status, uid }) {
               setRemoveMember({ displayName, uid });
             }}
           >
-            <FontAwesomeIcon icon={faCircleXmark} className={cx('icon')} />
+            <FontAwesomeIcon icon={faCircleXmark} className={cx('icon', 'remove')} />
           </IconButton>
         )}
       </div>

@@ -7,19 +7,22 @@ import { useContext } from 'react';
 import { AppContext } from '~/Context/AppProvider';
 import classNames from 'classnames/bind';
 import styles from './LogoutModal.module.scss';
-import { db, auth } from '~/firebase/config';
-import { doc, updateDoc } from 'firebase/firestore';
+import { auth, db } from '~/firebase/config';
+import { doc, updateDoc, serverTimestamp } from 'firebase/firestore';
 
 const cx = classNames.bind(styles);
 function LogoutModal() {
-  const { isOpenLogOut, setIsOpenLogOut, userId } = useContext(AppContext);
+  const { isOpenLogOut, setIsOpenLogOut, setSelectedGroupId, userId, setUserId } = useContext(AppContext);
 
   const handleLogout = () => {
-    updateDoc(doc(db, 'users', userId), {
-      status: 'Offline',
+    // Set offline status when logout
+    updateDoc(doc(db, 'users', userId), { status: { state: 'Offline', last_changed: serverTimestamp() } }).then(() => {
+      // Logout
+      auth.signOut();
+      setSelectedGroupId('');
+      setUserId('')
+      setIsOpenLogOut(false);
     });
-    auth.signOut();
-    setIsOpenLogOut(false);
   };
 
   const handleCloseModal = () => {
@@ -27,8 +30,6 @@ function LogoutModal() {
   };
   return (
     <Modal
-      aria-labelledby="transition-modal-title"
-      aria-describedby="transition-modal-description"
       open={isOpenLogOut}
       onClose={handleCloseModal}
       closeAfterTransition
@@ -50,7 +51,7 @@ function LogoutModal() {
             <ButtonBase variant="outlined" className={cx('btn')} onClick={handleCloseModal}>
               Cancel
             </ButtonBase>
-            <ButtonBase variant="contained" type='submit' className={cx('btn', 'logout-btn')} onClick={handleLogout}>
+            <ButtonBase variant="contained" type="submit" className={cx('btn', 'logout-btn')} onClick={handleLogout}>
               Log Out
             </ButtonBase>
           </div>

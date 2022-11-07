@@ -10,28 +10,42 @@ import styles from './LeaveGroupModal.module.scss';
 import { db } from '~/firebase/config';
 import { doc, updateDoc } from 'firebase/firestore';
 import { AuthContext } from '~/Context/AuthProvider';
+import { addNotifications } from '~/firebase/services';
 
 const cx = classNames.bind(styles);
 function LeaveGroupModal() {
-  const { isOpenLeaveGroup, setIsOpenLeaveGroup, isAdmin, selectedGroupId, selectedGroup, setSelectedGroupId } = useContext(AppContext);
-  const { uid } = useContext(AuthContext)
+  const {
+    isOpenLeaveGroup,
+    setIsOpenLeaveGroup,
+    isAdmin,
+    selectedGroupId,
+    selectedGroup,
+    setSelectedGroupId,
+    emailUserDisplayName,
+  } = useContext(AppContext);
+  const { uid, displayName } = useContext(AuthContext);
 
   const handleLeaveGroup = () => {
-    const groupRef = doc(db, 'groups', selectedGroupId)
-    updateDoc(groupRef, {
-      members: selectedGroup.members.filter(memberUid => memberUid !== uid)
-    })
-    if (isAdmin) {
-      if (selectedGroup.admins.length === 1) {
-        updateDoc(groupRef, {
-          admins: selectedGroup.members.filter(memberUid => memberUid !== uid)
-        })
-      } else {
-        updateDoc(groupRef, {
-          admins: selectedGroup.admins.filter(memberUid => memberUid !== uid)
-        })
+    // Asynchronous action -  add notification before leave
+    addNotifications(uid, `${displayName || emailUserDisplayName} has leaved this group`, `${displayName || emailUserDisplayName}`).then(() => {
+      // Handle leave
+      const groupRef = doc(db, 'groups', selectedGroupId);
+      updateDoc(groupRef, {
+        members: selectedGroup.members.filter((memberUid) => memberUid !== uid),
+      });
+      // If isAdmin that remove from admin array
+      if (isAdmin) {
+        if (selectedGroup.admins.length === 1) {
+          updateDoc(groupRef, {
+            admins: selectedGroup.members.filter((memberUid) => memberUid !== uid),
+          });
+        } else {
+          updateDoc(groupRef, {
+            admins: selectedGroup.admins.filter((memberUid) => memberUid !== uid),
+          });
+        }
       }
-    }
+    })
     setIsOpenLeaveGroup(false);
     setSelectedGroupId('');
   };

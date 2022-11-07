@@ -1,6 +1,6 @@
-import { addDoc, collection, serverTimestamp, } from 'firebase/firestore';
 import { signInWithPopup } from 'firebase/auth';
 import { db, auth } from './config';
+import { addDoc, collection, serverTimestamp, orderBy, getDocs, where, query } from 'firebase/firestore';
 
 export const generateKeyWords = (displayName) => {
   let keywords = [];
@@ -29,4 +29,24 @@ export const addUsers = async (provider) => {
       createAt: serverTimestamp(),
     });
   }
+};
+
+const getGroups = async (uid) => {
+  const q = query(collection(db, 'groups'), where('members', 'array-contains', uid), orderBy('createAt'));
+  const querySnapshot = await getDocs(q);
+  return querySnapshot.docs.map((doc) => ({
+    id: doc.id,
+  }));
+};
+
+export const addNotifications = async(uid, message, displayName) => {
+  getGroups(uid).then((groupIds) =>
+    addDoc(collection(db, 'messages'), {
+      type: 'notification',
+      text: message,
+      displayName,
+      groupId: groupIds[groupIds.length - 1].id,
+      createAt: serverTimestamp(),
+    }),
+  );
 };

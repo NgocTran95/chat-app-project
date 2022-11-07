@@ -78,7 +78,7 @@ function GroupInfo() {
     <div className={cx('container')}>
       <div className={cx('avatar')}>
         <Avatar src={avatarURL} sx={{ width: 50, height: 50 }} alt="avatar">
-          {avatarURL ? '' : name.charAt(0).toUpperCase()}
+          {avatarURL ? '' : name?.charAt(0).toUpperCase()}
         </Avatar>
       </div>
       <div className={cx('details')}>
@@ -132,9 +132,9 @@ function GroupInfo() {
             )}
           </StyledMenu>
         </div>
-        <p className={cx('member-quantity')}>{members.length} members</p>
+        <p className={cx('member-quantity')}>{members?.length} members</p>
         <p className={cx('last-msg-info')}>
-          {!!lastMessage && <span>Last message: </span>}
+          <span>Last message: </span>
           <span>{formatDate(lastMessage?.createAt?.seconds)}</span>
         </p>
       </div>

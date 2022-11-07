@@ -9,8 +9,19 @@ import classNames from 'classnames/bind';
 import styles from './InviteMemberModal.module.scss';
 import { AppContext } from '~/Context/AppProvider';
 import { useForm } from 'react-hook-form';
-import { collection, doc, getDocs, limit, orderBy, query, updateDoc, where } from 'firebase/firestore';
+import {
+  collection,
+  doc,
+  getDocs,
+  limit,
+  orderBy,
+  query,
+  updateDoc,
+  where,
+} from 'firebase/firestore';
 import { db } from '~/firebase/config';
+import { AuthContext } from '~/Context/AuthProvider';
+import { addNotifications } from '~/firebase/services';
 
 const cx = classNames.bind(styles);
 
@@ -93,13 +104,27 @@ async function fetchUserList(search, curMembers) {
 //  React Component InviteMemberModal
 
 function InviteMemberModal() {
-  const { isOpenInviteMember, setIsOpenInviteMember, selectedGroup, selectedGroupId } = useContext(AppContext);
+  const { isOpenInviteMember, setIsOpenInviteMember, selectedGroup, selectedGroupId, emailUserDisplayName } =
+    useContext(AppContext);
+  const { uid, displayName } = useContext(AuthContext);
   const [options, setOptions] = useState([]);
   const { handleSubmit } = useForm();
 
   const handleInviteMember = () => {
     const groupRef = doc(db, 'groups', selectedGroupId);
+    // Invite member
     updateDoc(groupRef, { members: [...selectedGroup.members, ...options.map((option) => option.value)] });
+
+    // Add notification
+    addNotifications(
+      uid,
+      `${displayName || emailUserDisplayName} has invited ${options.reduce(
+        (people, option) => (people += `${option.title} `),
+        '',
+      )}to this group`,
+      `${displayName || emailUserDisplayName}`
+    );
+
     setIsOpenInviteMember(false);
     setOptions([]);
   };

@@ -9,7 +9,6 @@ import ProfileAvatar from '~/components/ProfileAvatar';
 import { AuthContext } from '~/Context/AuthProvider';
 import { AppContext } from '~/Context/AppProvider';
 
-
 const cx = classNames.bind(styles);
 function Profile() {
   const { displayName, photoURL, email } = useContext(AuthContext);
@@ -23,7 +22,7 @@ function Profile() {
       <div className={cx('info')}>
         <h4 className={cx('name')}>{displayName || emailUserDisplayName}</h4>
         <p className={cx('desc')}>{email}</p>
-        <div className={cx('status')}>Online</div>
+        <p className={cx('status')}>Online</p>
       </div>
       <IconButton className={cx('logout')} onClick={setIsOpenLogOut}>
         <FontAwesomeIcon icon={faRightFromBracket} className={cx('icon')} />

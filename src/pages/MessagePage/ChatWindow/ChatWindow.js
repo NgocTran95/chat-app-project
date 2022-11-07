@@ -12,6 +12,7 @@ import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
 import { db } from '~/firebase/config';
 import { formatDate } from '~/utilities';
 import EmojiPicker from 'emoji-picker-react';
+import nonChatBg from '~/assets/images/non-chat-bg.jpg';
 
 const cx = classNames.bind(styles);
 function ChatWindow() {
@@ -23,7 +24,7 @@ function ChatWindow() {
   if (selectedGroupId === '')
     return (
       <div className={cx('container')}>
-        <p className={cx('notification')}>Select a chat to messaging</p>
+        <img className={cx('nonchat-bg')} src={nonChatBg} alt="non-chat-bg" />
       </div>
     );
   const { name, description } = selectedGroup;
@@ -32,6 +33,7 @@ function ChatWindow() {
     e.preventDefault();
     if (messageValue.trim().length === 0) return;
     addDoc(collection(db, 'messages'), {
+      type: 'message',
       text: messageValue,
       uid,
       photoURL,
@@ -62,12 +64,21 @@ function ChatWindow() {
       <div className={cx('inner')}>
         <div className={cx('msg-field')}>
           {messages.map((message, index, messages) => {
+            if (message.type === 'notification') {
+              return (
+                <div className={cx('notification')} key={message.id}>
+                  <div className={cx('notification-text')}>{message.text}</div>
+                </div>
+              );
+            }
             const prevUid = messages[index - 1]?.uid;
             const nextUid = messages[index + 1]?.uid;
             return (
               <div className={cx('msg-container', message.uid === uid ? 'user-msg' : '')} key={message.id}>
                 {prevUid === message.uid || (
-                  <Avatar src={message.photoURL} alt={message.displayName} className={cx('msg-avatar')} />
+                  <Avatar src={message.photoURL} alt={message.displayName} className={cx('msg-avatar')}>
+                    {message.photoURL ? '' : message.displayName.charAt(0).toUpperCase()}
+                  </Avatar>
                 )}
                 <div
                   className={cx(
@@ -85,7 +96,11 @@ function ChatWindow() {
             );
           })}
         </div>
-        {isShowEmoji && <div className={cx('emoji')}><EmojiPicker onEmojiClick={handleEmojiClick} /></div>}
+        {isShowEmoji && (
+          <div className={cx('emoji')}>
+            <EmojiPicker onEmojiClick={handleEmojiClick} />
+          </div>
+        )}
         <form className={cx('reply-field')} onSubmit={handleSendMessage}>
           <input
             className={cx('reply-input')}
