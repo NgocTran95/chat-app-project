@@ -1,6 +1,6 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faSearch } from '@fortawesome/free-solid-svg-icons';
-import { IconButton } from '@mui/material';
+import { ButtonBase } from '@mui/material';
 import classNames from 'classnames/bind';
 import { useContext, useState } from 'react';
 
@@ -18,10 +18,10 @@ function GroupList() {
     <div className={cx('container')}>
       <header className={cx('header')}>
         <span>Chat Groups</span>
-        <IconButton className={cx('add-btn')} onClick={handleOpenAddGroup}>
+        <ButtonBase className={cx('add-btn')} onClick={handleOpenAddGroup}>
           <FontAwesomeIcon icon={faPlus} className={cx('icon')} />
           Create Group
-        </IconButton>
+        </ButtonBase>
       </header>
       <form className={cx('search-field')}>
         <input
@@ -39,9 +39,7 @@ function GroupList() {
           ? groups.map((group) => <ChatGroup key={group.id} {...group} />)
           : groups
               .filter((group) => group.name.toLowerCase().includes(searchValue.trim().toLowerCase()))
-              .map((group) => {
-                <ChatGroup key={group.id} {...group} />;
-              })}
+              .map((group) => <ChatGroup key={group.id} {...group} />)}
       </div>
     </div>
   );

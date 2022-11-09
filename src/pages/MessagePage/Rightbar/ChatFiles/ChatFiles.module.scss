@@ -25,7 +25,7 @@
 
 .chat-files {
   overflow-y: hidden;
-  transition: all 0.25s ease-in-out;
+  transition: var(--button-transition);
   max-height: 0;
   &.show {
     max-height: 255px;

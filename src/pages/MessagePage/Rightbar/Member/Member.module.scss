@@ -6,7 +6,7 @@
   padding: 12px 5px 12px 10px;
   border-radius: 5px;
   border: 1px solid transparent;
-  transition: all 0.25s ease-in-out;
+  transition: var(--button-transition);
   & ~ .container {
     margin-top: 5px;
   }

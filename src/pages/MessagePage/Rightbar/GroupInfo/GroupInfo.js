@@ -5,11 +5,11 @@ import { Avatar, IconButton, Menu, MenuItem } from '@mui/material';
 import { useContext, useState } from 'react';
 import { AppContext } from '~/Context/AppProvider';
 import { formatDate } from '~/utilities';
-import { DeleteForever, Edit, ExitToApp, MoreVert } from '@mui/icons-material';
+import { DeleteForever, Edit, ExitToApp, MoreVert, PersonAdd } from '@mui/icons-material';
 import { styled, alpha } from '@mui/material/styles';
 
 const StyledMenu = styled((props) => (
-  <Menu
+  <Menu 
     elevation={0}
     anchorOrigin={{
       vertical: 'bottom',
@@ -58,6 +58,7 @@ function GroupInfo() {
     setIsOpenEditGroup,
     setIsOpenLeaveGroup,
     setIsOpenDeleteGroup,
+    setIsOpenInviteMember,
     isAdmin,
   } = useContext(AppContext);
   // Toggle Side Menu
@@ -72,7 +73,7 @@ function GroupInfo() {
 
   if (selectedGroupId === '') return;
   const { name, members, avatarURL } = selectedGroup;
-  const lastMessage = messages[messages.length - 1];
+  const lastMessage = (messages[messages.length - 1]);
 
   return (
     <div className={cx('container')}>
@@ -108,7 +109,16 @@ function GroupInfo() {
               }}
             >
               <Edit />
-              Edit this group
+              Edit group
+            </MenuItem>
+            <MenuItem
+              onClick={() => {
+                setIsOpenInviteMember(true);
+                handleCloseMenu();
+              }}
+            >
+              <PersonAdd />
+              Invite members
             </MenuItem>
             <MenuItem
               onClick={() => {
@@ -117,7 +127,7 @@ function GroupInfo() {
               }}
             >
               <ExitToApp />
-              Leave this group
+              Leave group
             </MenuItem>
             {isAdmin && (
               <MenuItem
@@ -127,7 +137,7 @@ function GroupInfo() {
                 }}
               >
                 <DeleteForever />
-                Delete this group
+                Delete group
               </MenuItem>
             )}
           </StyledMenu>

@@ -9,7 +9,7 @@ import {
   faFilm,
   faFile,
 } from '@fortawesome/free-solid-svg-icons';
-import { ButtonBase, IconButton, Avatar } from '@mui/material';
+import { ButtonBase, Avatar } from '@mui/material';
 
 import styles from './ClosedRightbarInner.module.scss';
 import ProfileAvatar from '~/components/ProfileAvatar';
@@ -23,9 +23,9 @@ function ClosedRightbarInner({ handleToggleRightBar }) {
   return (
     <div className={cx('inner')}>
       <header className={cx('header')}>
-        <IconButton className={cx('toggle-btn')} onClick={() => handleToggleRightBar()}>
+        <ButtonBase className={cx('toggle-btn')} onClick={() => handleToggleRightBar()}>
           <FontAwesomeIcon icon={faArrowRight} />
-        </IconButton>
+        </ButtonBase>
       </header>
       <div className={cx('avatar')}>
         <Avatar

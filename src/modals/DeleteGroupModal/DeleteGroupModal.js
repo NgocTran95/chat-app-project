@@ -12,10 +12,15 @@ import { doc, deleteDoc } from 'firebase/firestore';
 
 const cx = classNames.bind(styles);
 function DeleteGroupModal() {
-  const { isOpenDeleteGroup, setIsOpenDeleteGroup, selectedGroupId, setSelectedGroupId } = useContext(AppContext);
+  const { isOpenDeleteGroup, setIsOpenDeleteGroup, selectedGroupId, setSelectedGroupId, messages } = useContext(AppContext);
 
   const handleDeleteGroup = () => {
+    // Delete group
     deleteDoc(doc(db, 'groups', selectedGroupId))
+    // Delete all messages in group
+    messages.forEach(message => {
+      deleteDoc(doc(db, 'messages', message.id))
+    })
     setSelectedGroupId('')
     setIsOpenDeleteGroup(false);
   };

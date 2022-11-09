@@ -7,6 +7,12 @@
   .toggle-btn {
     font-size: 1.6rem;
     padding: 13px;
+    background-color: rgba(0, 0, 0, 0.05);
+    border-radius: 50%;
+    &:hover {
+      background-color: rgba(0, 0, 0, 0.15);
+      transition: var(--button-transition);
+    }
   }
   p {
     font-size: 1.8rem;

@@ -1,7 +1,7 @@
 import { useContext, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft, faPhone, faVideo } from '@fortawesome/free-solid-svg-icons';
-import { ButtonBase, IconButton } from '@mui/material';
+import { ButtonBase } from '@mui/material';
 import classNames from 'classnames/bind';
 
 import styles from './Rightbar.module.scss';
@@ -24,9 +24,9 @@ function Rightbar() {
       {isOpen ? (
         <>
           <header className={cx('header')}>
-            <IconButton className={cx('toggle-btn')} onClick={handleToggleRightBar}>
+            <ButtonBase className={cx('toggle-btn')} onClick={handleToggleRightBar}>
               <FontAwesomeIcon icon={faArrowLeft} />
-            </IconButton>
+            </ButtonBase>
             <p>Chat details</p>
           </header>
           <GroupInfo />

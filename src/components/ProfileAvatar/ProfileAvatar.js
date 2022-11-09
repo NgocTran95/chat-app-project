@@ -1,6 +1,6 @@
 import { Avatar, Badge } from '@mui/material';
 import { styled } from '@mui/material/styles';
-import { statusColors } from '~/Constants';
+import { statusColors } from '~/constants';
 
 function ProfileAvatar({ image, name, status, width, height }) {
   const StyledBadge = styled(Badge)(({ theme }) => ({

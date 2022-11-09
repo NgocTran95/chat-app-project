@@ -95,7 +95,7 @@
     border-radius: 100%;
     background-color: #ffffff;
     cursor: pointer;
-    transition: all 0.25s ease-in-out;
+    transition: var(--button-transition);
   }
 
   .facebook {

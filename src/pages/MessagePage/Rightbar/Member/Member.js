@@ -4,9 +4,10 @@ import { faMicrophoneSlash, faCircleXmark } from '@fortawesome/free-solid-svg-ic
 import classNames from 'classnames/bind';
 import styles from './Member.module.scss';
 import ProfileAvatar from '~/components/ProfileAvatar';
-import { statusColors } from '~/Constants';
+import { statusColors } from '~/constants';
 import { useContext } from 'react';
 import { AppContext } from '~/Context/AppProvider';
+import { formatOfflineTime } from '~/utilities';
 
 const cx = classNames.bind(styles);
 function Member({ photoURL, displayName, status, uid }) {
@@ -17,9 +18,10 @@ function Member({ photoURL, displayName, status, uid }) {
       <ProfileAvatar name={displayName} image={photoURL} status={status.state} width={36} height={36} />
       <div className={cx('info')}>
         <h4 className={cx('name')}>{displayName}</h4>
-        <p className={cx('status')} style={{ color: statusColors[status.state] }}>
+        <div className={cx('status')} style={{ color: statusColors[status.state] }}>
           {status.state}
-        </p>
+          {status.state === 'Online' ? '' : <p>{`${formatOfflineTime(status.last_changed.seconds)} ago`}</p>}
+        </div>
       </div>
       <div className={cx('actions')}>
         <IconButton className={cx('action-btn', 'microphone')}>

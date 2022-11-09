@@ -40,6 +40,12 @@
 
 .logout {
   padding: 15px !important;
+  background-color: rgba(0, 0, 0, 0.05) !important;
+  border-radius: 50% !important;
+  transition: var(--button-transition);
+  &:hover {
+  background-color: rgba(0, 0, 0, 0.15) !important;
+  }
 }
 
 .icon {

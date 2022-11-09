@@ -3,24 +3,27 @@ import { faFaceGrinWide } from '@fortawesome/free-regular-svg-icons';
 import { faPaperclip, faPaperPlane } from '@fortawesome/free-solid-svg-icons';
 import { Avatar, AvatarGroup, IconButton } from '@mui/material';
 import classNames from 'classnames/bind';
-import { useContext, useState } from 'react';
+import { useContext, useRef, useState } from 'react';
 import styles from './ChatWindow.module.scss';
 
 import { AppContext } from '~/Context/AppProvider';
 import { AuthContext } from '~/Context/AuthProvider';
 import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
 import { db } from '~/firebase/config';
-import { formatDate } from '~/utilities';
 import EmojiPicker from 'emoji-picker-react';
 import nonChatBg from '~/assets/images/non-chat-bg.jpg';
+import Message from './Message';
+import UploadFile from './UploadFile';
 
 const cx = classNames.bind(styles);
 function ChatWindow() {
   const [messageValue, setMessageValue] = useState('');
   const [isShowEmoji, setIsShowEmoji] = useState(false);
+  const [isOpenUploadFile, setIsOpenUploadFile] = useState(false);
   const { selectedGroup, selectedGroupId, modifiedMembers, messages } = useContext(AppContext);
   const { uid, photoURL, displayName } = useContext(AuthContext);
   const { emailUserDisplayName } = useContext(AppContext);
+  const inputRef = useRef()
   if (selectedGroupId === '')
     return (
       <div className={cx('container')}>
@@ -40,6 +43,7 @@ function ChatWindow() {
       displayName: displayName || emailUserDisplayName,
       groupId: selectedGroupId,
       createAt: serverTimestamp(),
+      hearts: [],
     });
     setMessageValue('');
   };
@@ -47,6 +51,7 @@ function ChatWindow() {
   const handleEmojiClick = (emojiData) => {
     setMessageValue((prevMsg) => prevMsg + emojiData.emoji);
     setIsShowEmoji(false);
+    inputRef.current.focus()
   };
   return (
     <div className={cx('container')}>
@@ -63,38 +68,9 @@ function ChatWindow() {
       </header>
       <div className={cx('inner')}>
         <div className={cx('msg-field')}>
-          {messages.map((message, index, messages) => {
-            if (message.type === 'notification') {
-              return (
-                <div className={cx('notification')} key={message.id}>
-                  <div className={cx('notification-text')}>{message.text}</div>
-                </div>
-              );
-            }
-            const prevUid = messages[index - 1]?.uid;
-            const nextUid = messages[index + 1]?.uid;
-            return (
-              <div className={cx('msg-container', message.uid === uid ? 'user-msg' : '')} key={message.id}>
-                {prevUid === message.uid || (
-                  <Avatar src={message.photoURL} alt={message.displayName} className={cx('msg-avatar')}>
-                    {message.photoURL ? '' : message.displayName.charAt(0).toUpperCase()}
-                  </Avatar>
-                )}
-                <div
-                  className={cx(
-                    'msg-text',
-                    prevUid !== message.uid ? 'first-text' : '',
-                    nextUid !== message.uid ? 'last-text' : '',
-                  )}
-                >
-                  <p className={cx('msg-text-content')}>{message.text}</p>
-                  {nextUid === message.uid || (
-                    <span className={cx('msg-time')}>{formatDate(message.createAt?.seconds)}</span>
-                  )}
-                </div>
-              </div>
-            );
-          })}
+          {messages.map((message, index, messages) => (
+            <Message key={message.id} message={message} index={index} messages={messages} />
+          ))}
         </div>
         {isShowEmoji && (
           <div className={cx('emoji')}>
@@ -104,6 +80,7 @@ function ChatWindow() {
         <form className={cx('reply-field')} onSubmit={handleSendMessage}>
           <input
             className={cx('reply-input')}
+            ref={inputRef}
             placeholder="Enter your message here..."
             onChange={(e) => {
               setMessageValue(e.target.value);
@@ -114,15 +91,17 @@ function ChatWindow() {
             <IconButton className={cx('reply-btn')} onClick={() => setIsShowEmoji((prev) => !prev)}>
               <FontAwesomeIcon icon={faFaceGrinWide} className={cx('icon')} />
             </IconButton>
-            <IconButton className={cx('reply-btn')}>
+            <IconButton className={cx('reply-btn')} onClick={() => setIsOpenUploadFile(true)}>
               <FontAwesomeIcon icon={faPaperclip} className={cx('icon')} />
             </IconButton>
             <IconButton className={cx('reply-btn', 'send-btn')} onClick={handleSendMessage}>
               <FontAwesomeIcon icon={faPaperPlane} className={cx('icon')} />
+              <p>Send</p>
             </IconButton>
           </div>
         </form>
       </div>
+      {isOpenUploadFile && <UploadFile setIsOpenUploadFile={setIsOpenUploadFile}/>}
     </div>
   );
 }

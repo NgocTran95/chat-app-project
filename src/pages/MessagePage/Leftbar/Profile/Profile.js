@@ -1,7 +1,7 @@
 import classNames from 'classnames/bind';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faRightFromBracket } from '@fortawesome/free-solid-svg-icons';
-import { IconButton } from '@mui/material';
+import { ButtonBase } from '@mui/material';
 import { useContext } from 'react';
 
 import styles from './Profile.module.scss';
@@ -24,9 +24,9 @@ function Profile() {
         <p className={cx('desc')}>{email}</p>
         <p className={cx('status')}>Online</p>
       </div>
-      <IconButton className={cx('logout')} onClick={setIsOpenLogOut}>
+      <ButtonBase className={cx('logout')} onClick={setIsOpenLogOut}>
         <FontAwesomeIcon icon={faRightFromBracket} className={cx('icon')} />
-      </IconButton>
+      </ButtonBase>
     </article>
   );
 }

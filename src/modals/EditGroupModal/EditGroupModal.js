@@ -10,10 +10,13 @@ import classNames from 'classnames/bind';
 import styles from './EditGroupModal.module.scss';
 import { doc, updateDoc } from 'firebase/firestore';
 import { db } from '~/firebase/config';
+import { addNotifications } from '~/firebase/services';
+import { AuthContext } from '~/Context/AuthProvider';
 
 const cx = classNames.bind(styles);
 function EditGroupModal() {
-  const { isOpenEditGroup, setIsOpenEditGroup, selectedGroupId } = useContext(AppContext);
+  const { isOpenEditGroup, setIsOpenEditGroup, selectedGroupId, emailUserDisplayName } = useContext(AppContext);
+  const { uid, displayName } = useContext(AuthContext)
   const {
     register,
     handleSubmit,
@@ -28,6 +31,11 @@ function EditGroupModal() {
       description: data.groupDesc,
       avatarURL: data.groupAvatar,
     });
+    addNotifications(
+      uid,
+      `${displayName || emailUserDisplayName} has updated this group information`,
+      `${displayName || emailUserDisplayName}`
+    );
     reset({
       groupName: '',
       groupDesc: '',
