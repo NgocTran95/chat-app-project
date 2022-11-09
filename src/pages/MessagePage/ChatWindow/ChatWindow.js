@@ -20,9 +20,8 @@ function ChatWindow() {
   const [messageValue, setMessageValue] = useState('');
   const [isShowEmoji, setIsShowEmoji] = useState(false);
   const [isOpenUploadFile, setIsOpenUploadFile] = useState(false);
-  const { selectedGroup, selectedGroupId, modifiedMembers, messages } = useContext(AppContext);
+  const { selectedGroup, selectedGroupId, modifiedMembers, messages, emailUserDisplayName } = useContext(AppContext);
   const { uid, photoURL, displayName } = useContext(AuthContext);
-  const { emailUserDisplayName } = useContext(AppContext);
   const inputRef = useRef()
   if (selectedGroupId === '')
     return (
@@ -54,7 +53,7 @@ function ChatWindow() {
     inputRef.current.focus()
   };
   return (
-    <div className={cx('container')}>
+    <div className={cx('container')} onDragEnter={() => setIsOpenUploadFile(true)} onDragLeave={() => setIsOpenUploadFile(false)}>
       <header className={cx('header')}>
         <div className={cx('info')}>
           <p className={cx('name')}>{name}</p>

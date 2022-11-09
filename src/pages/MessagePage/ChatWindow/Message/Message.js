@@ -8,6 +8,7 @@ import { formatDate } from '~/utilities';
 import heartIcon from '~/assets/images/heart-icon.png';
 import { doc, updateDoc } from 'firebase/firestore';
 import { db } from '~/firebase/config';
+import MessageContent from './MessageContent';
 
 const cx = classNames.bind(styles);
 function Message({ message, index, messages }) {
@@ -17,6 +18,7 @@ function Message({ message, index, messages }) {
       hearts: [...message.hearts, uid],
     });
   };
+  // Notification messages
   if (message.type === 'notification') {
     return (
       <div className={cx('notification')}>
@@ -24,9 +26,9 @@ function Message({ message, index, messages }) {
       </div>
     );
   }
+  // Default messages
   const prevUid = messages[index - 1]?.uid;
   const nextUid = messages[index + 1]?.uid;
-  const urlRegex = /[(http(s)?):\/\/(www\.)?a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/gi;
   return (
     <div className={cx('msg-container', message.uid === uid ? 'user-msg' : '')}>
       {prevUid === message.uid || (
@@ -36,18 +38,12 @@ function Message({ message, index, messages }) {
       )}
       <div
         className={cx(
-          'msg-text',
-          prevUid !== message.uid ? 'first-text' : '',
-          nextUid !== message.uid ? 'last-text' : '',
+          'msg-inner',
+          prevUid !== message.uid ? 'first-msg' : '',
+          nextUid !== message.uid ? 'last-msg' : '',
         )}
       >
-        {urlRegex.test(message.text) ? (
-          <a className={cx('msg-text-content')} href={message.text} target="_blank" rel="noreferrer">
-            {message.text}
-          </a>
-        ) : (
-          <p className={cx('msg-text-content')}>{message.text}</p>
-        )}
+        <MessageContent message={message}/>
         {nextUid === message.uid || <span className={cx('msg-time')}>{formatDate(message.createAt?.seconds)}</span>}
         {message.hearts.length > 0 && (
           <div className={cx('heart-num-container')}>

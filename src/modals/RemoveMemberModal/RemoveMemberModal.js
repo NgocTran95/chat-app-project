@@ -8,9 +8,8 @@ import { AppContext } from '~/Context/AppProvider';
 import classNames from 'classnames/bind';
 import styles from './RemoveMemberModal.module.scss';
 import { db } from '~/firebase/config';
-import { doc, updateDoc } from 'firebase/firestore';
+import { doc, updateDoc, addDoc, collection, serverTimestamp } from 'firebase/firestore';
 import { AuthContext } from '~/Context/AuthProvider';
-import { addNotifications } from '~/firebase/services';
 
 const cx = classNames.bind(styles);
 function RemoveMemberModal() {
@@ -23,17 +22,21 @@ function RemoveMemberModal() {
     selectedGroupId,
     emailUserDisplayName,
   } = useContext(AppContext);
-  const { uid, displayName } = useContext(AuthContext);
+  const { displayName } = useContext(AuthContext);
   const handleRemoveMember = () => {
     const groupRef = doc(db, 'groups', selectedGroupId);
     // Remove member
     updateDoc(groupRef, {
       members: selectedGroup.members.filter((memberUid) => memberUid !== removeMember.uid),
-    });
-
-    // Add notification
-    addNotifications(uid, `${displayName || emailUserDisplayName} has removed ${removeMember.displayName} from this group`, `${displayName || emailUserDisplayName}`)
-    
+    }).then(() => {
+      addDoc(collection(db, 'messages'), {
+        type: 'notification',
+        text: `${displayName || emailUserDisplayName} has removed ${removeMember.displayName} from this group`,
+        displayName: displayName || emailUserDisplayName,
+        groupId: selectedGroupId,
+        createAt: serverTimestamp(),
+      });
+    });    
     setRemoveMember(null);
     setIsOpenRemoveMember(false);
   };

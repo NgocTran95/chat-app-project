@@ -31,6 +31,7 @@ export const addUsers = async (provider) => {
   }
 };
 
+// Function handle add notification when create new one group
 const getGroups = async (uid) => {
   const q = query(collection(db, 'groups'), where('members', 'array-contains', uid), orderBy('createAt'));
   const querySnapshot = await getDocs(q);
@@ -39,7 +40,7 @@ const getGroups = async (uid) => {
   }));
 };
 
-export const addNotifications = async(uid, message, displayName) => {
+export const addNotificationWhenCreateGroup = async(uid, message, displayName) => {
   getGroups(uid).then((groupIds) =>
     addDoc(collection(db, 'messages'), {
       type: 'notification',

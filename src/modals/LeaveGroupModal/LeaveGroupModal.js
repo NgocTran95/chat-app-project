@@ -8,9 +8,8 @@ import { AppContext } from '~/Context/AppProvider';
 import classNames from 'classnames/bind';
 import styles from './LeaveGroupModal.module.scss';
 import { db } from '~/firebase/config';
-import { doc, updateDoc } from 'firebase/firestore';
+import { doc, updateDoc, addDoc, collection, serverTimestamp } from 'firebase/firestore';
 import { AuthContext } from '~/Context/AuthProvider';
-import { addNotifications } from '~/firebase/services';
 
 const cx = classNames.bind(styles);
 function LeaveGroupModal() {
@@ -27,7 +26,13 @@ function LeaveGroupModal() {
 
   const handleLeaveGroup = () => {
     // Asynchronous action -  add notification before leave
-    addNotifications(uid, `${displayName || emailUserDisplayName} has leaved this group`, `${displayName || emailUserDisplayName}`).then(() => {
+    addDoc(collection(db, 'messages'), {
+      type: 'notification',
+      text: `${displayName || emailUserDisplayName} has leaved this group`,
+      displayName: displayName || emailUserDisplayName,
+      groupId: selectedGroupId,
+      createAt: serverTimestamp(),
+    }).then(() => {
       // Handle leave
       const groupRef = doc(db, 'groups', selectedGroupId);
       updateDoc(groupRef, {

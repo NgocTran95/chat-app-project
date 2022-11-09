@@ -11,7 +11,7 @@ import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
 import { db } from '~/firebase/config';
 import { AuthContext } from '~/Context/AuthProvider';
 import { AppContext } from '~/Context/AppProvider';
-import { addNotifications } from '~/firebase/services';
+import { addNotificationWhenCreateGroup } from '~/firebase/services';
 
 const cx = classNames.bind(styles);
 function AddGroupModal() {
@@ -34,6 +34,8 @@ function AddGroupModal() {
       members: [uid],
       createAt: serverTimestamp(),
       admins: [uid],
+    }).then(() => {
+      addNotificationWhenCreateGroup(uid, `${displayName || emailUserDisplayName} has created this group`, `${displayName || emailUserDisplayName}`)
     });
     reset({
       groupName: '',
@@ -41,9 +43,6 @@ function AddGroupModal() {
       groupAvatar: '',
     });
     setIsOpenAddGroup(false);
-
-    // Add notification
-    addNotifications(uid, `${displayName || emailUserDisplayName} has created this group`, `${displayName || emailUserDisplayName}`)
   };
 
   const handleCloseModal = () => {

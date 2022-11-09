@@ -16,3 +16,17 @@ export const formatOfflineTime = (seconds) => {
   }
   return formatTime;
 };
+
+export const formatFileSize = (size) => {
+  let formatSize
+  if (size > 1024*1024*1024) {
+    formatSize = `${(size/(1024*1024*1024)).toFixed(2)} GB`
+  } else if (size > 1024*1024) {
+    formatSize = `${(size/(1024*1024)).toFixed(2)} MB`
+  } else if (size > 1024){
+    formatSize = `${(size/(1024)).toFixed(2)} KB`
+  } else {
+    formatSize = `${size} B`
+  }
+  return formatSize
+}

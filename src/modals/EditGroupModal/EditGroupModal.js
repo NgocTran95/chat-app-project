@@ -8,15 +8,14 @@ import { useForm } from 'react-hook-form';
 import { AppContext } from '~/Context/AppProvider';
 import classNames from 'classnames/bind';
 import styles from './EditGroupModal.module.scss';
-import { doc, updateDoc } from 'firebase/firestore';
+import { doc, updateDoc, addDoc, collection, serverTimestamp } from 'firebase/firestore';
 import { db } from '~/firebase/config';
-import { addNotifications } from '~/firebase/services';
 import { AuthContext } from '~/Context/AuthProvider';
 
 const cx = classNames.bind(styles);
 function EditGroupModal() {
   const { isOpenEditGroup, setIsOpenEditGroup, selectedGroupId, emailUserDisplayName } = useContext(AppContext);
-  const { uid, displayName } = useContext(AuthContext)
+  const { displayName } = useContext(AuthContext);
   const {
     register,
     handleSubmit,
@@ -30,12 +29,15 @@ function EditGroupModal() {
       name: data.groupName,
       description: data.groupDesc,
       avatarURL: data.groupAvatar,
+    }).then(() => {
+      addDoc(collection(db, 'messages'), {
+        type: 'notification',
+        text: `${displayName || emailUserDisplayName} has updated this group information`,
+        displayName: displayName || emailUserDisplayName,
+        groupId: selectedGroupId,
+        createAt: serverTimestamp(),
+      });
     });
-    addNotifications(
-      uid,
-      `${displayName || emailUserDisplayName} has updated this group information`,
-      `${displayName || emailUserDisplayName}`
-    );
     reset({
       groupName: '',
       groupDesc: '',

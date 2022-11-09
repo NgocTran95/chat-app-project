@@ -3,6 +3,7 @@ import styles from './ChatFile.module.scss';
 import { Avatar, IconButton } from '@mui/material';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronRight } from '@fortawesome/free-solid-svg-icons';
+import { formatFileSize } from '~/utilities';
 
 const cx = classNames.bind(styles);
 function ChatFile({ icon, name, quantity, size}) {
@@ -15,7 +16,7 @@ function ChatFile({ icon, name, quantity, size}) {
         <h5 className={cx('files-type')}>{name}</h5>
         <p className={cx('files-qtt')}>{quantity} files</p>
       </div>
-      <p className={cx('files-size')}>{size}MB</p>
+      <p className={cx('files-size')}>{formatFileSize(size)}</p>
       <IconButton className={cx('files-more')}>
         <FontAwesomeIcon icon={faChevronRight} />
       </IconButton>
