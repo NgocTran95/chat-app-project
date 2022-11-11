@@ -6,7 +6,6 @@
 }
 
 .avatar {
-  padding: 7px;
   position: relative;
 }
 
@@ -26,7 +25,7 @@
 .desc {
   font-size: 1.2rem;
   color: var(--blur-text-color);
-  max-width: 200px;
+  flex: 1;
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;

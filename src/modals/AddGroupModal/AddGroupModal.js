@@ -7,17 +7,15 @@ import { useForm } from 'react-hook-form';
 
 import classNames from 'classnames/bind';
 import styles from './AddGroupModal.module.scss';
-import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
+import { addDoc, collection, serverTimestamp, query, where, orderBy, getDocs } from 'firebase/firestore';
 import { db } from '~/firebase/config';
 import { AuthContext } from '~/Context/AuthProvider';
 import { AppContext } from '~/Context/AppProvider';
-import { addNotificationWhenCreateGroup } from '~/firebase/services';
 
 const cx = classNames.bind(styles);
 function AddGroupModal() {
-  const { isOpenAddGroup, setIsOpenAddGroup } = useContext(AppContext);
+  const { isOpenAddGroup, setIsOpenAddGroup, setSelectedGroupId, emailUserDisplayName } = useContext(AppContext);
   const { uid, displayName } = useContext(AuthContext);
-  const { emailUserDisplayName } = useContext(AppContext);
   const {
     register,
     handleSubmit,
@@ -35,7 +33,23 @@ function AddGroupModal() {
       createAt: serverTimestamp(),
       admins: [uid],
     }).then(() => {
-      addNotificationWhenCreateGroup(uid, `${displayName || emailUserDisplayName} has created this group`, `${displayName || emailUserDisplayName}`)
+      const getGroups = async (uid) => {
+        const q = query(collection(db, 'groups'), where('members', 'array-contains', uid), orderBy('createAt'));
+        const querySnapshot = await getDocs(q);
+        return querySnapshot.docs.map((doc) => ({
+          id: doc.id,
+        }));
+      };
+      getGroups(uid).then((groupIds) => {
+        addDoc(collection(db, 'messages'), {
+          type: 'notification',
+          text: `${displayName || emailUserDisplayName} has created this group`,
+          displayName: displayName || emailUserDisplayName,
+          groupId: groupIds[groupIds.length - 1].id,
+          createAt: serverTimestamp(),
+        });
+        setSelectedGroupId(groupIds[groupIds.length - 1].id);
+      });
     });
     reset({
       groupName: '',

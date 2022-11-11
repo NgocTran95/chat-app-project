@@ -13,8 +13,8 @@ import { AuthContext } from '~/Context/AuthProvider';
 
 const cx = classNames.bind(styles);
 function UploadFile({ setIsOpenUploadFile }) {
-  const { emailUserDisplayName, selectedGroupId } = useContext(AppContext)
-  const { displayName, photoURL, uid } = useContext(AuthContext)
+  const { emailUserDisplayName, selectedGroupId } = useContext(AppContext);
+  const { displayName, photoURL, uid } = useContext(AuthContext);
   const [isUploading, setIsUploading] = useState(false);
   const [file, setFile] = useState({});
   const [progress, setProgress] = useState(0);
@@ -22,7 +22,7 @@ function UploadFile({ setIsOpenUploadFile }) {
   const handleStopEvent = (e) => {
     e.preventDefault();
     e.stopPropagation();
-    setIsOpenUploadFile(true)
+    setIsOpenUploadFile(true);
   };
   const handleBrowseFile = (e) => {
     const selectedFile = e.target.files[0];
@@ -46,6 +46,7 @@ function UploadFile({ setIsOpenUploadFile }) {
   };
   const handleSendFileToStorage = (selectedFile) => {
     const { name, type, size } = selectedFile;
+    console.log(selectedFile);
     setIsUploading(true);
     setFile({ name, type, size });
     const storageRef = ref(storage, `${type.split('/')[0]}/${name}`);
@@ -65,11 +66,9 @@ function UploadFile({ setIsOpenUploadFile }) {
       () => {
         getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
           addDoc(collection(db, 'messages'), {
-            type: `${type}`,
+            type: `${type.split('/')[0]}`,
             text: `has sent a file`,
-            fileUrl: downloadURL,
-            fileSize: size,
-            fileName: name,
+            [type.split('/')[0]]: { downloadURL, size, name, type },
             photoURL,
             uid,
             displayName: displayName || emailUserDisplayName,
@@ -81,13 +80,19 @@ function UploadFile({ setIsOpenUploadFile }) {
             setFile({});
             setIsUploading(false);
             setIsOpenUploadFile(false);
-          })
+          });
         });
       },
-      );
+    );
   };
   return (
-    <div className={cx('container')} onDragEnter={handleStopEvent} onDragOver={handleStopEvent} onDrop={handleDropFile}>
+    <div
+      className={cx('container')}
+      onDragEnter={handleStopEvent}
+      onDragOver={handleStopEvent}
+      onDragLeave={() => setIsOpenUploadFile(false)}
+      onDrop={handleDropFile}
+    >
       <div className={cx('inner')}>
         {!isUploading && (
           <button className={cx('close-btn')} onClick={() => setIsOpenUploadFile(false)}>

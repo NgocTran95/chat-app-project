@@ -1,0 +1,57 @@
+.container {
+    position: absolute;
+    left: 20px;
+    right: 20px;
+    bottom: 85px;
+    z-index: 1;
+    background-color: #1618230f;
+    padding: 10px 20px;
+    border-radius: 10px;
+}
+
+.inner {
+    position: relative;
+    border-left: 2px solid #1778f2;
+    padding-left: 10px;
+    display: flex;
+    align-items: center;
+}
+
+.file-icon {
+    width: 45px;
+}
+
+.quote-img {
+    height: 50px;
+}
+
+.quote-content {
+    margin-left: 10px;
+}
+
+.quote-header {
+    display: flex;
+    align-items: center;
+    p {
+        margin-left: 5px;
+    }
+}
+
+.quote-msg {
+    font-size: 1.2rem;
+    font-weight: 500;
+    overflow-wrap: break-word;
+}
+
+.close-btn {
+    position: absolute;
+    top: 0;
+    right: -10px;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    cursor: pointer;
+    &:hover {
+        color: var(--danger-color);
+    }
+}

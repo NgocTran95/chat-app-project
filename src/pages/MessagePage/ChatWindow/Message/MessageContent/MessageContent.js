@@ -1,33 +1,21 @@
 import classNames from 'classnames/bind';
 import styles from './MessageContent.module.scss';
-import docIcon from '~/assets/images/doc-icon.svg';
-import imageIcon from '~/assets/images/image-icon.svg';
-import mp4Icon from '~/assets/images/mp4-icon.svg';
-import pdfIcon from '~/assets/images/pdf-icon.svg';
 import { faDownload } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { formatFileSize } from '~/utilities';
-
-const fileIcons = {
-    'application/pdf': pdfIcon,
-    'application/msword': docIcon,
-    'application/vnd.openxmlformats-officedocument.wordprocessingml.document': docIcon,
-    'video/mp4': mp4Icon,
-    'image/png': imageIcon,
-    'image/jpeg': imageIcon,
-}
+import { fileIcons } from '~/constants';
 
 const cx = classNames.bind(styles);
 function MessageContent({ message }) {
-  if (message.type !== 'message') {
+  if (message.type === 'application') {
     return (
       <div className={cx('container')}>
-        <img src={fileIcons[message.type]} className={cx('file-icon')} alt="file-icon" />
+        <img src={fileIcons[message.application.type]} className={cx('file-icon')} alt="file-icon" />
         <div className={cx('file-info')}>
-          <p className={cx('file-name')}>{message.fileName}</p>
-          <p className={cx('file-size')}>{formatFileSize(message.fileSize)}</p>
+          <p className={cx('file-name')}>{message.application.name}</p>
+          <p className={cx('file-size')}>{formatFileSize(message.application.size)}</p>
         </div>
-        <a className={cx('download-btn')} href={message.fileUrl} download target='_blank' rel="noreferrer">
+        <a className={cx('download-btn')} href={message.application.downloadURL} download target="_blank" rel="noreferrer">
           <FontAwesomeIcon icon={faDownload} />
         </a>
       </div>
@@ -37,6 +25,25 @@ function MessageContent({ message }) {
   const urlRegex = /[(http(s)?):\/\/(www\.)?a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/gi;
   return (
     <>
+      {!!message.quote && (
+        <div className={cx('quote')}>
+          <div className={cx('quote-inner')}>
+            {message.quote.type.split('/')[0] === 'application' && (
+              <img src={fileIcons[message.quote.type]} className={cx('quote-file-icon')} alt="file-icon" />
+            )}
+            {message.quote.type.split('/')[0] === 'image' && (
+              <img src={message.quote.url} className={cx('quote-image-icon')} alt={message.quote.text} />
+            )}
+            {message.quote.type.split('/')[0] === 'video' && (
+              <img src={fileIcons[message.quote.type]} className={cx('quote-file-icon')} alt="file-icon" />
+            )}
+            <div className={cx('quote-content')}>
+              <p>{message.quote.name}</p>
+              <p className={cx('quote-msg')}>{message.quote.text}</p>
+            </div>
+          </div>
+        </div>
+      )}
       {urlRegex.test(message.text) ? (
         <a className={cx('msg-text')} href={message.text} target="_blank" rel="noreferrer">
           {message.text}

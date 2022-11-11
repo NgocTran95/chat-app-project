@@ -14,15 +14,17 @@ import EmojiPicker from 'emoji-picker-react';
 import nonChatBg from '~/assets/images/non-chat-bg.jpg';
 import Message from './Message';
 import UploadFile from './UploadFile';
+import Quote from './Quote';
 
 const cx = classNames.bind(styles);
 function ChatWindow() {
   const [messageValue, setMessageValue] = useState('');
   const [isShowEmoji, setIsShowEmoji] = useState(false);
   const [isOpenUploadFile, setIsOpenUploadFile] = useState(false);
+  const [quote, setQuote] = useState(null);
   const { selectedGroup, selectedGroupId, modifiedMembers, messages, emailUserDisplayName } = useContext(AppContext);
   const { uid, photoURL, displayName } = useContext(AuthContext);
-  const inputRef = useRef()
+  const inputRef = useRef();
   if (selectedGroupId === '')
     return (
       <div className={cx('container')}>
@@ -31,11 +33,18 @@ function ChatWindow() {
     );
   const { name, description } = selectedGroup;
 
+  const handleStopEvent = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsOpenUploadFile(true);
+  };
+
   const handleSendMessage = (e) => {
     e.preventDefault();
     if (messageValue.trim().length === 0) return;
     addDoc(collection(db, 'messages'), {
       type: 'message',
+      quote,
       text: messageValue,
       uid,
       photoURL,
@@ -45,15 +54,16 @@ function ChatWindow() {
       hearts: [],
     });
     setMessageValue('');
+    setQuote(null);
   };
 
   const handleEmojiClick = (emojiData) => {
     setMessageValue((prevMsg) => prevMsg + emojiData.emoji);
     setIsShowEmoji(false);
-    inputRef.current.focus()
+    inputRef.current.focus();
   };
   return (
-    <div className={cx('container')} onDragEnter={() => setIsOpenUploadFile(true)} onDragLeave={() => setIsOpenUploadFile(false)}>
+    <div className={cx('container')}>
       <header className={cx('header')}>
         <div className={cx('info')}>
           <p className={cx('name')}>{name}</p>
@@ -66,11 +76,16 @@ function ChatWindow() {
         </AvatarGroup>
       </header>
       <div className={cx('inner')}>
-        <div className={cx('msg-field')}>
+        <div
+          className={cx('msg-field')}
+          onDragEnter={handleStopEvent}
+          onDragOver={handleStopEvent}
+        >
           {messages.map((message, index, messages) => (
-            <Message key={message.id} message={message} index={index} messages={messages} />
+            <Message key={message.id} message={message} index={index} messages={messages} setQuote={setQuote} />
           ))}
         </div>
+        {!!quote && <Quote quote={quote} setQuote={setQuote} />}
         {isShowEmoji && (
           <div className={cx('emoji')}>
             <EmojiPicker onEmojiClick={handleEmojiClick} />
@@ -100,7 +115,7 @@ function ChatWindow() {
           </div>
         </form>
       </div>
-      {isOpenUploadFile && <UploadFile setIsOpenUploadFile={setIsOpenUploadFile}/>}
+      {isOpenUploadFile && <UploadFile setIsOpenUploadFile={setIsOpenUploadFile} />}
     </div>
   );
 }

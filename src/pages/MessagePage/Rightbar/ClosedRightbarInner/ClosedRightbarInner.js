@@ -7,7 +7,6 @@ import {
   faFileLines,
   faFileImage,
   faFilm,
-  faFile,
 } from '@fortawesome/free-solid-svg-icons';
 import { ButtonBase, Avatar } from '@mui/material';
 
@@ -68,9 +67,6 @@ function ClosedRightbarInner({ handleToggleRightBar }) {
           </Avatar>
           <Avatar sx={{ width: 40, height: 40 }}>
             <FontAwesomeIcon icon={faFilm} className={cx('files-icon')} />
-          </Avatar>
-          <Avatar sx={{ width: 40, height: 40 }}>
-            <FontAwesomeIcon icon={faFile} className={cx('avatar-icon')} />
           </Avatar>
         </div>
       </div>

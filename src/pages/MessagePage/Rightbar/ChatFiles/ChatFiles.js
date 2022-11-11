@@ -21,7 +21,7 @@ function ChatFiles() {
 
   const calculateFolderSize = useCallback((type) => {
     const files = messages.filter(message => message.type.split('/')[0] === type)
-    const totalSize = files.reduce((total, file) => total += file.fileSize, 0)
+    const totalSize = files.reduce((total, file) => total += file[type].size, 0)
     const totalNum = files.reduce((total, file) => total += 1, 0)
     return {totalSize, totalNum}
   },[messages])

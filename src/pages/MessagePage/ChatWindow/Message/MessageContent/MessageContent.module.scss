@@ -1,12 +1,10 @@
-
-
 .container {
   display: flex;
   align-items: center;
 }
 
 .file-icon {
-  width: 50px;
+  width: 45px;
 }
 
 .file-info {
@@ -15,7 +13,6 @@
   margin-right: 15px;
   .file-size {
     font-size: 1.2rem;
-
   }
 }
 
@@ -26,12 +23,51 @@
   align-items: center;
   justify-content: center;
   background-color: #ffffff;
-  border-radius: 5px;
+  border-radius: 20px;
   color: var(--text-color);
   box-shadow: rgb(204, 219, 232) 3px 3px 6px 0px inset, rgba(255, 255, 255, 0.5) -3px -3px 6px 1px inset;
 }
 
 .msg-text {
   width: 100%;
+  word-break: break-all;
+}
+
+// Quote
+
+.quote {
+  padding: 5px 10px;
+  border-radius: 10px;
+  background-color: #B3FFAE;
+}
+
+.quote-inner {
+  position: relative;
+  border-left: 2px solid #1778f2;
+  display: flex;
+  align-items: center;
+  .quote-file-icon {
+    width: 35px;
+    margin-left: 10px;
+  }
+  .quote-image-icon {
+    height: 35px;
+    margin-left: 10px;
+  }
+}
+
+.quote-content {
+  margin-left: 10px;
+  color: var(--blur-text-color);
+}
+
+.quote-header {
+  display: flex;
+  align-items: center;
+}
+
+.quote-msg {
+  font-size: 1.2rem;
+  font-weight: 500;
   word-break: break-all;
 }

@@ -1,63 +1,71 @@
 @import 'normalize.css';
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@200;300;400;500;600;700;800&display=swap');
 :root {
-    --primary-color: #76C00D;
-    --secondary-color: #296eff;
-    --text-area-color: rgba(118,192,13,0.1);
-    --background-color: #ffffff;
-    --button-color: #EAEEF0;
-    --light-gray-bg-color: #dbe5ed;
-    --danger-color: #ea4335;
-    // Online Status
-    --afk-status-color: #FFBD08;
-    --offline-status-color: #AFBBC6;
-    // Text-color
-    --text-color: #4b5155;
-    --blur-text-color: #7b8793;
-    // Font
-    --primary-font: 'Montserrat', sans-serif;
-    // Transition
-    --button-transition: all 0.25s ease-in-out;
+  --primary-color: #76c00d;
+  --secondary-color: #296eff;
+  --text-area-color: rgba(118, 192, 13, 0.1);
+  --background-color: #ffffff;
+  --button-color: #eaeef0;
+  --light-gray-bg-color: #dbe5ed;
+  --danger-color: #ea4335;
+  // Online Status
+  --afk-status-color: #ffbd08;
+  --offline-status-color: #afbbc6;
+  // Text-color
+  --text-color: #4b5155;
+  --blur-text-color: #7b8793;
+  // Font
+  --primary-font: 'Montserrat', sans-serif;
+  // Transition
+  --button-transition: all 0.25s ease-in-out;
 }
 
-*, *::before, *::after {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
 html {
-    font-size: 62.5%;
+  font-size: 62.5%;
 }
 
 body {
-    font-family: var(--primary-font);
-    font-size: 1.6rem;
-    line-height: 1.5;
-    color: var(--text-color);
-    text-rendering: optimizeSpeed;
-    background-color: #7b8793;
+  font-family: var(--primary-font);
+  font-size: 1.6rem;
+  line-height: 1.5;
+  color: var(--text-color);
+  text-rendering: optimizeSpeed;
+  background-color: #7b8793;
 }
 
-button, input {
-    outline: none;
-    border: none;
-    font-family: var(--primary-font);
+button,
+input {
+  outline: none;
+  border: none;
+  font-family: var(--primary-font);
 }
 
 // Scroll bar
 
 html *::-webkit-scrollbar {
-    border-radius: 0;
-    width: 6px;
+  border-radius: 0;
+  width: 6px;
 }
 
 html *::-webkit-scrollbar-thumb {
-    border-radius: 3px;
-    background-color: rgba(22, 24, 35, 0.06);
+  border-radius: 3px;
+  background-color: rgba(22, 24, 35, 0.06);
 }
 
 html *::-webkit-scrollbar-track {
-    border-radius: 0;
-    background-color: rgba(0, 0, 0, 0);
+  border-radius: 0;
+  background-color: rgba(0, 0, 0, 0);
+}
+
+//
+.MuiTooltip-tooltip .MuiTooltip-tooltipPlacementBottom .css-ja5taz-MuiTooltip-tooltip {
+  font-size: 1.4rem !important;
 }
