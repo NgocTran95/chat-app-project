@@ -25,6 +25,7 @@ function ChatWindow() {
   const { selectedGroup, selectedGroupId, modifiedMembers, messages, emailUserDisplayName } = useContext(AppContext);
   const { uid, photoURL, displayName } = useContext(AuthContext);
   const inputRef = useRef();
+  const messageFieldRef = useRef();
   if (selectedGroupId === '')
     return (
       <div className={cx('container')}>
@@ -37,6 +38,10 @@ function ChatWindow() {
     e.preventDefault();
     e.stopPropagation();
     setIsOpenUploadFile(true);
+  };
+
+  const scrollToBottom = (ref) => {
+    ref.scrollTop = ref.scrollHeight;
   };
 
   const handleSendMessage = (e) => {
@@ -52,6 +57,8 @@ function ChatWindow() {
       groupId: selectedGroupId,
       createAt: serverTimestamp(),
       hearts: [],
+    }).then(() => {
+      scrollToBottom(messageFieldRef.current);
     });
     setMessageValue('');
     setQuote(null);
@@ -80,6 +87,7 @@ function ChatWindow() {
           className={cx('msg-field')}
           onDragEnter={handleStopEvent}
           onDragOver={handleStopEvent}
+          ref={messageFieldRef}
         >
           {messages.map((message, index, messages) => (
             <Message key={message.id} message={message} index={index} messages={messages} setQuote={setQuote} />

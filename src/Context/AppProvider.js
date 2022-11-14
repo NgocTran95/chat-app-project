@@ -1,5 +1,5 @@
-import { doc, updateDoc, serverTimestamp } from 'firebase/firestore'
-import { createContext, useContext, useEffect, useMemo, useState } from 'react';
+import { doc, updateDoc, serverTimestamp } from 'firebase/firestore';
+import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { db } from '~/firebase/config';
 import { useFireStore } from '~/hooks/useFireStore';
 import { AuthContext } from './AuthProvider';
@@ -99,6 +99,31 @@ function AppProvider({ children }) {
   }, [selectedGroupId]);
   const messages = useFireStore('messages', messagesCondition);
 
+  // Calculate the number and size of files
+
+  const calculateFolderSize = useCallback(
+    (type) => {
+      const fileMessages = messages.filter((message) => message.type.split('/')[0] === type);
+      const files = fileMessages.map((file) => file[type]);
+      const totalSize = fileMessages.reduce((total, file) => (total += file[type].size), 0);
+      const totalNum = fileMessages.reduce((total, file) => (total += 1), 0);
+      return { type, files, totalSize, totalNum };
+    },
+    [messages],
+  );
+
+  const totalDocuments = useMemo(() => {
+    return calculateFolderSize('application');
+  }, [calculateFolderSize]);
+
+  const totalImages = useMemo(() => {
+    return calculateFolderSize('image');
+  }, [calculateFolderSize]);
+
+  const totalVideos = useMemo(() => {
+    return calculateFolderSize('video');
+  }, [calculateFolderSize]);
+
   // Create this field because firebase does not support getting displayName, photo URL when login by Email
   // => get displayName from firestore (add doc when sign up) instead of from auth provider, photoURL set by default Avatar MUI component
 
@@ -157,6 +182,9 @@ function AppProvider({ children }) {
         userId,
         setUserId,
         isAdmin,
+        totalDocuments,
+        totalImages,
+        totalVideos,
       }}
     >
       {children}

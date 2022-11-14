@@ -125,7 +125,7 @@ function ShareMessageModal() {
             <div className={cx('groups')}>
               <header className={cx('groups-header')}>Select groups to share</header>
               <div className={cx('group-list')}>
-                {groupList.map((group) => (
+                {groupList.length === 0 ? <p className={cx('nogroup-notification')}>There are no groups to share...</p> : groupList.map((group) => (
                   <label key={group.id} className={cx('group')}>
                     <Checkbox
                       icon={<CircleOutlined />}

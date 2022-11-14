@@ -54,7 +54,7 @@ function Message({ message, index, messages, setQuote }) {
       beforeRevoke: message.type,
     });
   };
-  // Undo Revoking Message 
+  // Undo Revoking Message
   const undoRevokeMessage = (message) => {
     updateDoc(doc(db, 'messages', message.id), {
       type: message.beforeRevoke,
@@ -82,22 +82,25 @@ function Message({ message, index, messages, setQuote }) {
         )}
         <div
           className={cx(
-            'msg-inner', 'revoke',
+            'msg-inner',
+            'revoke',
             prevUid !== message.uid ? 'first-msg' : '',
             nextUid !== message.uid ? 'last-msg' : '',
           )}
         >
           {<p>Message has been revoked</p>}
           <div className={cx('actions')}>
-            {message.uid === uid && <Tooltip
-              title="Undo Revoke"
-              TransitionComponent={Zoom}
-              PopperProps={{ sx: { '& .MuiTooltip-tooltip': { fontSize: 10 } } }}
-            >
-              <button className={cx('action-btn')} onClick={() => undoRevokeMessage(message)}>
-                <FontAwesomeIcon icon={faRotateLeft} />
-              </button>
-            </Tooltip>}
+            {message.uid === uid && (
+              <Tooltip
+                title="Undo Revoke"
+                TransitionComponent={Zoom}
+                PopperProps={{ sx: { '& .MuiTooltip-tooltip': { fontSize: 10 } } }}
+              >
+                <button className={cx('action-btn')} onClick={() => undoRevokeMessage(message)}>
+                  <FontAwesomeIcon icon={faRotateLeft} />
+                </button>
+              </Tooltip>
+            )}
           </div>
         </div>
       </div>
@@ -146,7 +149,7 @@ function Message({ message, index, messages, setQuote }) {
             </div>
           </>
         )}
-        <p className={cx('comment')}>{message.comment}</p>
+        {message.comment && <p className={cx('comment')}>{message.comment}</p>}
         {nextUid === message.uid || <span className={cx('msg-time')}>{formatDate(message.createAt?.seconds)}</span>}
         {message.hearts.length > 0 && (
           <div className={cx('heart-num-container')}>

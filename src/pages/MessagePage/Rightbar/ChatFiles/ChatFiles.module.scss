@@ -28,7 +28,7 @@
   transition: var(--button-transition);
   max-height: 0;
   &.show {
-    max-height: 255px;
+    max-height: 320px;
     overscroll-behavior: contain;
     &:hover {
       overflow-y: overlay;

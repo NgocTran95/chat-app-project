@@ -1,27 +1,22 @@
 import classNames from 'classnames/bind';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-  faArrowRight,
-  faPhone,
-  faVideo,
-  faFileLines,
-  faFileImage,
-  faFilm,
-} from '@fortawesome/free-solid-svg-icons';
-import { ButtonBase, Avatar } from '@mui/material';
+import { faArrowRight, faPhone, faVideo, faFileLines, faFileImage, faFilm } from '@fortawesome/free-solid-svg-icons';
+import { ButtonBase, Avatar, Tooltip, Zoom } from '@mui/material';
 
 import styles from './ClosedRightbarInner.module.scss';
 import ProfileAvatar from '~/components/ProfileAvatar';
 import { useContext } from 'react';
 import { AppContext } from '~/Context/AppProvider';
 import { AuthContext } from '~/Context/AuthProvider';
+import { formatFileSize } from '~/utilities';
 const cx = classNames.bind(styles);
 function ClosedRightbarInner({ handleToggleRightBar }) {
-  const { modifiedMembers, toastMessage, setToastMessage } = useContext(AppContext)
-  const { uid } = useContext(AuthContext)
+  const { modifiedMembers, toastMessage, setToastMessage, selectedGroup, totalDocuments, totalImages, totalVideos } =
+    useContext(AppContext);
+  const { uid } = useContext(AuthContext);
   const sendMessage = () => {
     setToastMessage({ ...toastMessage, open: true, message: 'This feature will be updated soon', severity: 'error' });
-  }
+  };
   return (
     <div className={cx('inner')}>
       <header className={cx('header')}>
@@ -30,11 +25,7 @@ function ClosedRightbarInner({ handleToggleRightBar }) {
         </ButtonBase>
       </header>
       <div className={cx('avatar')}>
-        <Avatar
-          src="https://d1nslcd7m2225b.cloudfront.net/Pictures/1024x536/2/4/4/1230244_Minions+3.jpg"
-          sx={{ width: 40, height: 40 }}
-          alt="avatar"
-        />
+        <Avatar src={selectedGroup.avatarURL} sx={{ width: 40, height: 40 }} alt="avatar" />
       </div>
       <div className={cx('actions')}>
         <ButtonBase className={cx('call-btn', 'voice-chat')} onClick={sendMessage}>
@@ -53,7 +44,16 @@ function ClosedRightbarInner({ handleToggleRightBar }) {
             .filter((member) => member.uid !== uid)
             .map((member) => {
               const { uid, displayName, photoURL, status } = member;
-              return <ProfileAvatar key={uid} name={displayName} image={photoURL} status={status.state} width={40} height={40} />;
+              return (
+                <ProfileAvatar
+                  key={uid}
+                  name={displayName}
+                  image={photoURL}
+                  status={status.state}
+                  width={40}
+                  height={40}
+                />
+              );
             })}
         </div>
       </div>
@@ -62,15 +62,33 @@ function ClosedRightbarInner({ handleToggleRightBar }) {
           <h5 className={cx('files-title')}>Files</h5>
         </header>
         <div className={cx('files-icons')}>
-          <Avatar sx={{ width: 40, height: 40 }}>
-            <FontAwesomeIcon icon={faFileLines} className={cx('files-icon')} />
-          </Avatar>
-          <Avatar sx={{ width: 40, height: 40 }}>
-            <FontAwesomeIcon icon={faFileImage} className={cx('files-icon')} />
-          </Avatar>
-          <Avatar sx={{ width: 40, height: 40 }}>
-            <FontAwesomeIcon icon={faFilm} className={cx('files-icon')} />
-          </Avatar>
+          <Tooltip
+            title={`Total: ${totalDocuments.totalNum} files - ${formatFileSize(totalDocuments.totalSize)}`}
+            TransitionComponent={Zoom}
+            PopperProps={{ sx: { '& .MuiTooltip-tooltip': { fontSize: 10 } } }}
+          >
+            <Avatar sx={{ width: 40, height: 40 }}>
+              <FontAwesomeIcon icon={faFileLines} className={cx('files-icon')} />
+            </Avatar>
+          </Tooltip>
+          <Tooltip
+            title={`Total: ${totalImages.totalNum} files - ${formatFileSize(totalImages.totalSize)}`}
+            TransitionComponent={Zoom}
+            PopperProps={{ sx: { '& .MuiTooltip-tooltip': { fontSize: 10 } } }}
+          >
+            <Avatar sx={{ width: 40, height: 40 }}>
+              <FontAwesomeIcon icon={faFileImage} className={cx('files-icon')} />
+            </Avatar>
+          </Tooltip>
+          <Tooltip
+            title={`Total: ${totalVideos.totalNum} files - ${formatFileSize(totalVideos.totalSize)}`}
+            TransitionComponent={Zoom}
+            PopperProps={{ sx: { '& .MuiTooltip-tooltip': { fontSize: 10 } } }}
+          >
+            <Avatar sx={{ width: 40, height: 40 }}>
+              <FontAwesomeIcon icon={faFilm} className={cx('files-icon')} />
+            </Avatar>
+          </Tooltip>
         </div>
       </div>
     </div>
