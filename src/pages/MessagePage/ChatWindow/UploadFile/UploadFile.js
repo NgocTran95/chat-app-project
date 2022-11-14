@@ -46,7 +46,6 @@ function UploadFile({ setIsOpenUploadFile }) {
   };
   const handleSendFileToStorage = (selectedFile) => {
     const { name, type, size } = selectedFile;
-    console.log(selectedFile);
     setIsUploading(true);
     setFile({ name, type, size });
     const storageRef = ref(storage, `${type.split('/')[0]}/${name}`);
