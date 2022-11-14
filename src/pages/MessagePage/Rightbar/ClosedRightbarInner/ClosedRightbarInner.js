@@ -17,8 +17,11 @@ import { AppContext } from '~/Context/AppProvider';
 import { AuthContext } from '~/Context/AuthProvider';
 const cx = classNames.bind(styles);
 function ClosedRightbarInner({ handleToggleRightBar }) {
-  const { modifiedMembers } = useContext(AppContext)
+  const { modifiedMembers, toastMessage, setToastMessage } = useContext(AppContext)
   const { uid } = useContext(AuthContext)
+  const sendMessage = () => {
+    setToastMessage({ ...toastMessage, open: true, message: 'This feature will be updated soon', severity: 'error' });
+  }
   return (
     <div className={cx('inner')}>
       <header className={cx('header')}>
@@ -34,10 +37,10 @@ function ClosedRightbarInner({ handleToggleRightBar }) {
         />
       </div>
       <div className={cx('actions')}>
-        <ButtonBase className={cx('call-btn', 'voice-chat')}>
+        <ButtonBase className={cx('call-btn', 'voice-chat')} onClick={sendMessage}>
           <FontAwesomeIcon icon={faPhone} className={cx('call-icon')} />
         </ButtonBase>
-        <ButtonBase className={cx('call-btn', 'video-call')}>
+        <ButtonBase className={cx('call-btn', 'video-call')} onClick={sendMessage}>
           <FontAwesomeIcon icon={faVideo} className={cx('call-icon')} />
         </ButtonBase>
       </div>

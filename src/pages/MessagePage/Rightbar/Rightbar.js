@@ -13,8 +13,13 @@ import { AppContext } from '~/Context/AppProvider';
 
 const cx = classNames.bind(styles);
 function Rightbar() {
-  const { selectedGroupId } = useContext(AppContext);
+  const { selectedGroupId, setToastMessage, toastMessage } = useContext(AppContext);
   const [isOpen, setIsOpen] = useState(false);
+
+
+  const sendMessage = () => {
+    setToastMessage({ ...toastMessage, open: true, message: 'This feature will be updated soon', severity: 'error' });
+  }
   const handleToggleRightBar = () => {
     setIsOpen((prev) => !prev);
   };
@@ -31,11 +36,11 @@ function Rightbar() {
           </header>
           <GroupInfo />
           <div className={cx('actions')}>
-            <ButtonBase className={cx('call-btn', 'voice-chat')}>
+            <ButtonBase className={cx('call-btn', 'voice-chat')} onClick={sendMessage}>
               <FontAwesomeIcon icon={faPhone} className={cx('call-icon')} />
               <span>Voice chat</span>
             </ButtonBase>
-            <ButtonBase className={cx('call-btn', 'video-call')}>
+            <ButtonBase className={cx('call-btn', 'video-call')} onClick={sendMessage}>
               <FontAwesomeIcon icon={faVideo} className={cx('call-icon')} />
               <span>Video call</span>
             </ButtonBase>

@@ -67,7 +67,7 @@ function UploadFile({ setIsOpenUploadFile }) {
         getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
           addDoc(collection(db, 'messages'), {
             type: `${type.split('/')[0]}`,
-            text: `has sent a file`,
+            text: name,
             [type.split('/')[0]]: { downloadURL, size, name, type },
             photoURL,
             uid,

@@ -72,6 +72,8 @@
   }
   .msg-inner {
     max-width: 70%;
+    display: flex;
+    align-items: center;
     white-space: wrap;
     position: relative;
     width: fit-content;
@@ -90,6 +92,12 @@
     &.last-msg {
       border-bottom-left-radius: 10px;
       margin-bottom: 15px;
+    }
+    &.revoke {
+      background-color: #d3d3d3;
+      color: var(--blur-text-color);
+      font-style: italic;
+      font-size: 1.2rem;
     }
   }
 
@@ -209,5 +217,8 @@
         color: var(--danger-color);
       }
     }
+  }
+  .comment {
+    margin-top: 5px;
   }
 }

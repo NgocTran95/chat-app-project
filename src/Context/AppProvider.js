@@ -1,4 +1,4 @@
-import { doc, updateDoc, serverTimestamp } from 'firebase/firestore';
+import { doc, updateDoc, serverTimestamp } from 'firebase/firestore'
 import { createContext, useContext, useEffect, useMemo, useState } from 'react';
 import { db } from '~/firebase/config';
 import { useFireStore } from '~/hooks/useFireStore';
@@ -17,8 +17,15 @@ function AppProvider({ children }) {
   const [isOpenLeaveGroup, setIsOpenLeaveGroup] = useState(false);
   const [isOpenDeleteGroup, setIsOpenDeleteGroup] = useState(false);
   const [isOpenLogOut, setIsOpenLogOut] = useState(false);
+  const [shareMessage, setShareMessage] = useState(null);
+  const [toastMessage, setToastMessage] = useState({
+    open: false,
+    vertical: 'top',
+    horizontal: 'right',
+    message: '',
+    severity: 'success',
+  });
   const { uid } = useContext(AuthContext);
-
   // Set user offline when close tab
   useEffect(() => {
     window.addEventListener('beforeunload', () => {
@@ -45,14 +52,13 @@ function AppProvider({ children }) {
     };
   }, [uid]);
   const groups = useFireStore('groups', groupsCondition);
-  
   // Reset selectedGroupId when member removed or leave
   useEffect(() => {
-    if (!groups.map(group => group.id).includes(selectedGroupId)) {
-      setSelectedGroupId('')
+    if (!groups.map((group) => group.id).includes(selectedGroupId)) {
+      setSelectedGroupId('');
     }
-  }, [groups, selectedGroupId])
-  
+  }, [groups, selectedGroupId]);
+
   //  Get group to chat
   const selectedGroup = useMemo(() => {
     return groups.find((group) => group.id === selectedGroupId) || {};
@@ -96,7 +102,7 @@ function AppProvider({ children }) {
   // Create this field because firebase does not support getting displayName, photo URL when login by Email
   // => get displayName from firestore (add doc when sign up) instead of from auth provider, photoURL set by default Avatar MUI component
 
-  // Get current user 
+  // Get current user
   const userCondition = useMemo(() => {
     return {
       fieldName: 'uid',
@@ -114,7 +120,7 @@ function AppProvider({ children }) {
     if (uid) {
       setUserId(currentUser[0]?.id);
     } else {
-      setUserId('')
+      setUserId('');
     }
   }, [currentUser, uid]);
 
@@ -142,8 +148,12 @@ function AppProvider({ children }) {
         setIsOpenLogOut,
         isOpenDeleteGroup,
         setIsOpenDeleteGroup,
+        shareMessage,
+        setShareMessage,
         messages,
         emailUserDisplayName,
+        toastMessage,
+        setToastMessage,
         userId,
         setUserId,
         isAdmin,

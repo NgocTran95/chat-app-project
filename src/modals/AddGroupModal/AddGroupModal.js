@@ -34,7 +34,7 @@ function AddGroupModal() {
       admins: [uid],
     }).then(() => {
       const getGroups = async (uid) => {
-        const q = query(collection(db, 'groups'), where('members', 'array-contains', uid), orderBy('createAt'));
+        const q = query(collection(db, 'groups'), where('members', 'array-contains', uid), orderBy('createAt', 'asc'));
         const querySnapshot = await getDocs(q);
         return querySnapshot.docs.map((doc) => ({
           id: doc.id,

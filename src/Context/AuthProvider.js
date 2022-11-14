@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { auth, db } from '~/firebase/config';
 import { CircularProgress } from '@mui/material';
 import { onAuthStateChanged } from 'firebase/auth';
-import { collection, query, where, orderBy, getDocs, updateDoc, doc, serverTimestamp } from 'firebase/firestore';
+import { collection, query, where, getDocs, updateDoc, doc, serverTimestamp } from 'firebase/firestore';
 
 export const AuthContext = createContext();
 
@@ -13,7 +13,7 @@ function AuthProvider({ children }) {
   const [isLoading, setIsLoading] = useState(true);
 
   const getUsers = async (uid) => {
-    const q = query(collection(db, 'users'), where('uid', '==', uid), orderBy('createAt'));
+    const q = query(collection(db, 'users'), where('uid', '==', uid));
     const querySnapshot = await getDocs(q);
     return querySnapshot.docs.map((doc) => ({
       id: doc.id,

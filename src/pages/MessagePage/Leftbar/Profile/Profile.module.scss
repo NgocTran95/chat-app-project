@@ -10,8 +10,8 @@
 }
 
 .info {
-  padding-left: 15px;
-  flex: 1;
+  padding-left: 10px;
+  max-width: 180px;
 }
 
 .name {
@@ -38,6 +38,7 @@
 }
 
 .logout {
+  margin-left: 10px !important;
   padding: 15px !important;
   background-color: rgba(0, 0, 0, 0.05) !important;
   border-radius: 50% !important;

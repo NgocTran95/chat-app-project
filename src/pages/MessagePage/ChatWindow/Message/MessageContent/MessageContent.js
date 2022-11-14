@@ -32,14 +32,14 @@ function MessageContent({ message }) {
               <img src={fileIcons[message.quote.type]} className={cx('quote-file-icon')} alt="file-icon" />
             )}
             {message.quote.type.split('/')[0] === 'image' && (
-              <img src={message.quote.url} className={cx('quote-image-icon')} alt={message.quote.text} />
+              <img src={message.quote.downloadURL} className={cx('quote-image-icon')} alt={message.quote.name} />
             )}
             {message.quote.type.split('/')[0] === 'video' && (
               <img src={fileIcons[message.quote.type]} className={cx('quote-file-icon')} alt="file-icon" />
             )}
             <div className={cx('quote-content')}>
-              <p>{message.quote.name}</p>
-              <p className={cx('quote-msg')}>{message.quote.text}</p>
+              <p>{message.quote.displayName}</p>
+              <p className={cx('quote-msg')}>{message.quote.name}</p>
             </div>
           </div>
         </div>

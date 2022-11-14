@@ -10,6 +10,8 @@ import EditGroupModal from './modals/EditGroupModal';
 import RemoveMemberModal from './modals/RemoveMemberModal';
 import LeaveGroupModal from './modals/LeaveGroupModal';
 import DeleteGroupModal from './modals/DeleteGroupModal';
+import ShareMessageModal from './modals/ShareMessageModal';
+import ToastMessage from './components/ToastMessage/ToastMessage';
 
 function App() {
   return (
@@ -27,6 +29,8 @@ function App() {
           <LeaveGroupModal />
           <DeleteGroupModal />
           <LogoutModal />
+          <ShareMessageModal />
+          <ToastMessage />
         </AppProvider>
       </AuthProvider>
     </BrowserRouter>

@@ -1,24 +1,64 @@
-import { useContext } from 'react';
-import { Avatar, Tooltip } from '@mui/material';
 import classNames from 'classnames/bind';
-
-import styles from './Message.module.scss';
-import { AuthContext } from '~/Context/AuthProvider';
-import { formatDate, formatFileSize } from '~/utilities';
-import heartIcon from '~/assets/images/heart-icon.png';
+import { useContext } from 'react';
+import { Avatar, Tooltip, Zoom } from '@mui/material';
 import { doc, updateDoc } from 'firebase/firestore';
-import { db } from '~/firebase/config';
-import MessageContent from './MessageContent';
 import { faRotateLeft, faQuoteRight, faShare, faDownload } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Zoom } from '@mui/material';
+
+import styles from './Message.module.scss';
+import { formatDate, formatFileSize } from '~/utilities';
+import heartIcon from '~/assets/images/heart-icon.png';
+import { db } from '~/firebase/config';
+import { AuthContext } from '~/Context/AuthProvider';
+import { AppContext } from '~/Context/AppProvider';
+import MessageContent from './MessageContent';
 
 const cx = classNames.bind(styles);
 function Message({ message, index, messages, setQuote }) {
+  const { setShareMessage } = useContext(AppContext);
   const { uid } = useContext(AuthContext);
+  // Heart drop
   const addHeartDrop = () => {
     updateDoc(doc(db, 'messages', message.id), {
       hearts: [...message.hearts, uid],
+    });
+  };
+  // Create quote for Quoting and Sharing
+  const handleCreateQuoteMessage = (message, callback) => {
+    if (message.application) {
+      callback({
+        ...message.application,
+        displayName: message.displayName,
+        id: message.id,
+      });
+    } else if (message.image) {
+      callback({
+        ...message.image,
+        displayName: message.displayName,
+        id: message.id,
+      });
+    } else if (message.video) {
+      callback({
+        ...message.video,
+        displayName: message.displayName,
+        id: message.id,
+      });
+    } else {
+      callback({ name: message.text, type: message.type, displayName: message.displayName, id: message.id });
+    }
+  };
+  // Revoke Message
+  const revokeMessage = (message) => {
+    updateDoc(doc(db, 'messages', message.id), {
+      type: 'revoke',
+      beforeRevoke: message.type,
+    });
+  };
+  // Undo Revoking Message 
+  const undoRevokeMessage = (message) => {
+    updateDoc(doc(db, 'messages', message.id), {
+      type: message.beforeRevoke,
+      beforeRevoke: '',
     });
   };
   // Notification messages
@@ -26,6 +66,40 @@ function Message({ message, index, messages, setQuote }) {
     return (
       <div className={cx('notification')}>
         <div className={cx('notification-text')}>{message.text}</div>
+      </div>
+    );
+  }
+  // Revoke messages
+  if (message.type === 'revoke') {
+    const prevUid = messages[index - 1]?.uid;
+    const nextUid = messages[index + 1]?.uid;
+    return (
+      <div className={cx('msg-container', message.uid === uid ? 'user-msg' : '')} id={message.uid}>
+        {prevUid === message.uid || (
+          <Avatar src={message.photoURL} alt={message.displayName} className={cx('msg-avatar')}>
+            {message.photoURL ? '' : message.displayName.charAt(0).toUpperCase()}
+          </Avatar>
+        )}
+        <div
+          className={cx(
+            'msg-inner', 'revoke',
+            prevUid !== message.uid ? 'first-msg' : '',
+            nextUid !== message.uid ? 'last-msg' : '',
+          )}
+        >
+          {<p>Message has been revoked</p>}
+          <div className={cx('actions')}>
+            {message.uid === uid && <Tooltip
+              title="Undo Revoke"
+              TransitionComponent={Zoom}
+              PopperProps={{ sx: { '& .MuiTooltip-tooltip': { fontSize: 10 } } }}
+            >
+              <button className={cx('action-btn')} onClick={() => undoRevokeMessage(message)}>
+                <FontAwesomeIcon icon={faRotateLeft} />
+              </button>
+            </Tooltip>}
+          </div>
+        </div>
       </div>
     );
   }
@@ -72,6 +146,7 @@ function Message({ message, index, messages, setQuote }) {
             </div>
           </>
         )}
+        <p className={cx('comment')}>{message.comment}</p>
         {nextUid === message.uid || <span className={cx('msg-time')}>{formatDate(message.createAt?.seconds)}</span>}
         {message.hearts.length > 0 && (
           <div className={cx('heart-num-container')}>
@@ -90,37 +165,7 @@ function Message({ message, index, messages, setQuote }) {
             TransitionComponent={Zoom}
             PopperProps={{ sx: { '& .MuiTooltip-tooltip': { fontSize: 10 } } }}
           >
-            <button
-              className={cx('action-btn', 'quote')}
-              onClick={() => {
-                if (message.application) {
-                  setQuote({
-                    text: message.application.name,
-                    type: message.application.type,
-                    name: message.displayName,
-                    id: message.id,
-                  });
-                } else if (message.image) {
-                  setQuote({
-                    text: message.image.name,
-                    type: message.image.type,
-                    url: message.image.downloadURL,
-                    name: message.displayName,
-                    id: message.id,
-                  });
-                } else if (message.video) {
-                  setQuote({
-                    text: message.video.name,
-                    type: message.video.type,
-                    url: message.video.downloadURL,
-                    name: message.displayName,
-                    id: message.id,
-                  });
-                } else {
-                  setQuote({ text: message.text, type: message.type, name: message.displayName, id: message.id });
-                }
-              }}
-            >
+            <button className={cx('action-btn', 'quote')} onClick={() => handleCreateQuoteMessage(message, setQuote)}>
               <FontAwesomeIcon icon={faQuoteRight} />
             </button>
           </Tooltip>
@@ -129,7 +174,10 @@ function Message({ message, index, messages, setQuote }) {
             TransitionComponent={Zoom}
             PopperProps={{ sx: { '& .MuiTooltip-tooltip': { fontSize: 10 } } }}
           >
-            <button className={cx('action-btn', 'share')}>
+            <button
+              className={cx('action-btn', 'share')}
+              onClick={() => handleCreateQuoteMessage(message, setShareMessage)}
+            >
               <FontAwesomeIcon icon={faShare} />
             </button>
           </Tooltip>
@@ -139,7 +187,7 @@ function Message({ message, index, messages, setQuote }) {
               TransitionComponent={Zoom}
               PopperProps={{ sx: { '& .MuiTooltip-tooltip': { fontSize: 10 } } }}
             >
-              <button className={cx('action-btn', 'revoke')}>
+              <button className={cx('action-btn', 'revoke')} onClick={() => revokeMessage(message)}>
                 <FontAwesomeIcon icon={faRotateLeft} />
               </button>
             </Tooltip>

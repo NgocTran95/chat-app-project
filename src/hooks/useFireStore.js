@@ -19,8 +19,8 @@ export const useFireStore = (collectionName, condition) => {
       }
       collectionRef = query(
         collection(db, collectionName),
-        orderBy('createAt'),
         where(condition.fieldName, condition.operator, condition.compareValue),
+        orderBy('createAt', 'asc'),
       );
     }
     const unsubcribe = onSnapshot(collectionRef, (snapshot) => {

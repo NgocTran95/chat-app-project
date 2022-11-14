@@ -13,7 +13,7 @@ function Quote({ quote, setQuote }) {
           <img src={fileIcons[quote.type]} className={cx('file-icon')} alt="file-icon" />
         )}
         {quote.type.split('/')[0] === 'image' && (
-          <img src={quote.url} className={cx('quote-img')} alt="file-icon" />
+          <img src={quote.downloadURL} className={cx('quote-img')} alt="file-icon" />
         )}
         {quote.type.split('/')[0] === 'video' && (
           <img src={fileIcons[quote.type]} className={cx('quote-img')} alt="file-icon" />
@@ -23,7 +23,7 @@ function Quote({ quote, setQuote }) {
             <FontAwesomeIcon icon={faQuoteLeft} />
             <p>Quote</p>
           </header>
-          <p className={cx('quote-msg')}>{quote.text}</p>
+          <p className={cx('quote-msg')}>{quote.name}</p>
         </div>
         <button className={cx('close-btn')} onClick={() => setQuote(null)}>
           <FontAwesomeIcon icon={faClose} />

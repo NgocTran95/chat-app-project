@@ -1,0 +1,143 @@
+.container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 500px;
+  background-color: #ffffff;
+  border: none;
+  outline: none;
+  border-radius: 10px;
+  padding: 10px 20px 20px;
+}
+
+// Header
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 5px 0;
+  .close-btn {
+    width: 30px;
+    height: 30px;
+    &:hover {
+      color: red;
+    }
+  }
+}
+
+
+// Share Information
+.share {
+  padding: 10px;
+  margin-bottom: 10px;
+  background-color: rgba(0, 0, 0, 0.05);
+  border-radius: 5px;
+  .share-header {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 10px;
+  }
+
+  .share-content {
+    display: flex;
+    align-items: center;
+    padding-left: 10px;
+    border-left: 2px solid #1778f2;
+    .file-icon {
+      width: 45px;
+    } 
+    .share-img {
+      height: 45px;
+    }
+  }
+
+  .share-info {
+    margin-left: 10px;
+    .share-info-header {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 1.4rem;
+      font-weight: 500;
+    }
+    .share-info-text {
+      max-width: 380px;
+      font-size: 1.4rem;
+      font-weight: 500;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+    }
+  }
+  .comment {
+    width: 100%;
+    font-size: 1.4rem;
+    font-weight: 500;
+    margin-top: 10px;
+    padding: 5px;
+    border: 1px solid transparent;
+    border-radius: 5px;
+    background-color: transparent;
+    &:focus {
+      border: 1px solid var(--primary-color);
+    }
+    &::placeholder {
+      font-weight: 500;
+      font-size: 1.2rem;
+    }
+  }
+}
+
+// Groups
+
+.groups {
+  .groups-header{ 
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 10px;
+  }
+  .group-list {
+    max-height: 400px;
+    overflow-y: auto;
+    .group {
+      display: flex;
+      align-items: center;
+      padding: 5px;
+      border-radius: 5px;
+      cursor: pointer;
+      &:hover {
+        background-color: rgba(0, 0, 0, 0.05);
+        transition: var(--button-transition);
+      }
+      .group-avatar {
+        margin-left: 5px;
+      }
+      .group-name {
+        margin-left: 10px;
+        font-size: 1.4rem;
+        font-weight: 500;
+      }
+    }
+  }
+}
+
+
+// Action Buttons
+.btn-groups {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 20px;
+}
+
+.btn {
+  min-width: 100px;
+  height: 35px;
+  font-size: 1.3rem;
+  font-weight: 500;
+  border-radius: 5px !important;
+  &.share-btn {
+    background-color: var(--primary-color);
+    color: #ffffff;
+  }
+}
