@@ -11,8 +11,10 @@ import { formatOfflineTime } from '~/utilities';
 
 const cx = classNames.bind(styles);
 function Member({ photoURL, displayName, status, uid }) {
-  const { isAdmin, setIsOpenRemoveMember, setRemoveMember } = useContext(AppContext);
-
+  const { isAdmin, setIsOpenRemoveMember, setRemoveMember, toastMessage, setToastMessage } = useContext(AppContext);
+  const sendMessage = () => {
+    setToastMessage({ ...toastMessage, open: true, message: 'This feature will be updated soon', severity: 'error' });
+  }
   return (
     <div className={cx('container')}>
       <ProfileAvatar name={displayName} image={photoURL} status={status.state} width={36} height={36} />
@@ -24,7 +26,7 @@ function Member({ photoURL, displayName, status, uid }) {
         </div>
       </div>
       <div className={cx('actions')}>
-        <IconButton className={cx('action-btn', 'microphone')}>
+        <IconButton className={cx('action-btn', 'microphone')} onClick={sendMessage}>
           <FontAwesomeIcon icon={faMicrophoneSlash} className={cx('icon')} />
         </IconButton>
         {isAdmin && (

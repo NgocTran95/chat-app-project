@@ -7,6 +7,7 @@ import { useContext, useState } from 'react';
 import ChatGroup from './ChatGroup';
 import styles from './GroupList.module.scss';
 import { AppContext } from '~/Context/AppProvider';
+import notFoundSearchBackGround from '~/assets/images/not-found-search-bg.png'
 const cx = classNames.bind(styles);
 function GroupList() {
   const { groups, setIsOpenAddGroup } = useContext(AppContext);
@@ -40,6 +41,12 @@ function GroupList() {
           : groups
               .filter((group) => group.name.toLowerCase().includes(searchValue.trim().toLowerCase()))
               .map((group) => <ChatGroup key={group.id} {...group} />)}
+        {groups.filter((group) => group.name.toLowerCase().includes(searchValue.trim().toLowerCase()))?.length === 0 && (
+          <div className={cx('nogroup')}>
+            <img className={cx('nogroup-image')} src={notFoundSearchBackGround} alt='not-found-bg'/>
+            <p className={cx('nogroup-notification')}>Opps there are no groups...</p>
+          </div>
+        )}
       </div>
     </div>
   );

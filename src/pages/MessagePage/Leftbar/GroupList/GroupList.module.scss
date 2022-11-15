@@ -81,4 +81,23 @@
     overflow-y: overlay;
     transition: var(--button-transition);
   }
+
+  .nogroup {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    .nogroup-image {
+      width: 100px;
+      margin-top: 30px;
+      margin-bottom: 30px;
+    }
+    .nogroup-notification {
+      font-size: 1.2rem;
+      font-weight: 600;
+      font-style: italic;
+      text-align: center;
+    }
+  }
+  
 }

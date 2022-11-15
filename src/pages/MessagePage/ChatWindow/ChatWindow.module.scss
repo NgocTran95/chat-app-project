@@ -55,13 +55,17 @@
   max-height: 77vh;
   display: flex;
   flex-direction: column;
-  overflow-y: overlay;
+  overflow-y: hidden;
   overflow-x: hidden;
   margin-bottom: 20px;
   margin-top: 10px;
   margin-right: -12px;
   padding-right: 12px;
   scroll-behavior: smooth;
+  &:hover {
+    overflow-y: overlay;
+    transition: var(--button-transition);
+  }
 }
 
 // Reply field
