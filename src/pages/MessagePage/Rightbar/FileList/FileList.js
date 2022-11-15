@@ -4,7 +4,7 @@ import { Avatar, IconButton } from '@mui/material';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronDown, faChevronRight, faDownload } from '@fortawesome/free-solid-svg-icons';
 import { formatFileSize } from '~/utilities';
-import { fileIcons } from '~/constants';
+import { fileIcons } from '~/Constants';
 import { useState } from 'react';
 
 const cx = classNames.bind(styles);
@@ -39,13 +39,7 @@ function FileList({ icon, name, totals }) {
               <p className={cx('name')}>{file.name}</p>
               <p className={cx('size')}>{formatFileSize(file.size)}</p>
             </div>
-            <a
-              className={cx('download-btn')}
-              href={file.downloadURL}
-              download
-              target="_blank"
-              rel="noreferrer"
-            >
+            <a className={cx('download-btn')} href={file.downloadURL} download target="_blank" rel="noreferrer">
               <FontAwesomeIcon icon={faDownload} />
             </a>
           </div>

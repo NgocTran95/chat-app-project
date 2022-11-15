@@ -3,7 +3,7 @@ import styles from './MessageContent.module.scss';
 import { faDownload } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { formatFileSize } from '~/utilities';
-import { fileIcons } from '~/constants';
+import { fileIcons } from '~/Constants';
 
 const cx = classNames.bind(styles);
 function MessageContent({ message }) {
@@ -15,7 +15,13 @@ function MessageContent({ message }) {
           <p className={cx('file-name')}>{message.application.name}</p>
           <p className={cx('file-size')}>{formatFileSize(message.application.size)}</p>
         </div>
-        <a className={cx('download-btn')} href={message.application.downloadURL} download target="_blank" rel="noreferrer">
+        <a
+          className={cx('download-btn')}
+          href={message.application.downloadURL}
+          download
+          target="_blank"
+          rel="noreferrer"
+        >
           <FontAwesomeIcon icon={faDownload} />
         </a>
       </div>

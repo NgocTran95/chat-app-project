@@ -7,11 +7,11 @@ import { useContext, useMemo, useState } from 'react';
 import { AppContext } from '~/Context/AppProvider';
 import classNames from 'classnames/bind';
 import styles from './ShareMessageModal.module.scss';
-import { fileIcons } from '~/constants';
 import { CheckCircle, CircleOutlined } from '@mui/icons-material';
 import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
 import { db } from '~/firebase/config';
 import { AuthContext } from '~/Context/AuthProvider';
+import { fileIcons } from '~/Constants';
 
 const cx = classNames.bind(styles);
 function ShareMessageModal() {

@@ -2,7 +2,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faClose, faQuoteLeft } from '@fortawesome/free-solid-svg-icons';
 import classNames from 'classnames/bind';
 import styles from './Quote.module.scss';
-import { fileIcons } from '~/constants';
+import { fileIcons } from '~/Constants';
 
 const cx = classNames.bind(styles);
 function Quote({ quote, setQuote }) {
