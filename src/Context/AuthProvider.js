@@ -1,9 +1,9 @@
 import { createContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { auth, db } from '~/firebase/config';
-import { CircularProgress } from '@mui/material';
 import { onAuthStateChanged } from 'firebase/auth';
 import { collection, query, where, getDocs, updateDoc, doc, serverTimestamp } from 'firebase/firestore';
+import Loading from '~/components/Loading';
 
 export const AuthContext = createContext();
 
@@ -44,7 +44,7 @@ function AuthProvider({ children }) {
 
   return (
     <AuthContext.Provider value={{ ...user, setUser }}>
-      {isLoading ? <CircularProgress /> : children}
+      {isLoading ? <Loading /> : children}
     </AuthContext.Provider>
   );
 }

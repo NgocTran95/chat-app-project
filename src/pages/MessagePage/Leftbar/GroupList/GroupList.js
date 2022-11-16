@@ -24,7 +24,7 @@ function GroupList() {
           Create Group
         </ButtonBase>
       </header>
-      <form className={cx('search-field')}>
+      <div className={cx('search-field')}>
         <input
           className={cx('search-input')}
           placeholder="Search groups..."
@@ -34,7 +34,7 @@ function GroupList() {
         <div className={cx('search-btn')}>
           <FontAwesomeIcon icon={faSearch} className={cx('search-icon')} />
         </div>
-      </form>
+      </div>
       <div className={cx('groups')}>
         {searchValue.trim() === ''
           ? groups.map((group) => <ChatGroup key={group.id} {...group} />)
