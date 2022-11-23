@@ -174,7 +174,7 @@ function Message({ message, index, messages, setQuote }: Props) {
           </>
         )}
         {message.comment && <p className={cx('comment')}>{message.comment}</p>}
-        {nextUid === message.uid || <span className={cx('msg-time')}>{formatDate(message.createAt.seconds)}</span>}
+        {nextUid === message.uid || <span className={cx('msg-time')}>{formatDate(message.createAt?.seconds)}</span>}
         {message.hearts.length > 0 && (
           <div className={cx('heart-num-container')}>
             <div className={cx('heart-num')}>

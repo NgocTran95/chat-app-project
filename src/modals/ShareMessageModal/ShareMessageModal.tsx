@@ -160,17 +160,16 @@ function ShareMessageModal() {
             </div>
           </div>
           <div className={cx('btn-groups')}>
-            <Button variant="outlined" className={cx('btn')} onClick={handleCloseModal}>
+            <button className={cx('btn')} onClick={handleCloseModal}>
               Cancel
-            </Button>
-            <Button
-              variant="contained"
+            </button>
+            <button
               type="submit"
               className={cx('btn', 'share-btn')}
               onClick={handleShareMessage}
             >
               Share
-            </Button>
+            </button>
           </div>
         </Box>
       </Fade>

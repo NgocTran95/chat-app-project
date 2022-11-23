@@ -1,5 +1,6 @@
 import { styled, alpha } from '@mui/material/styles';
 import { Menu } from '@mui/material';
+
 type Props = {
   id: string;
   open: boolean;
@@ -8,9 +9,8 @@ type Props = {
   onClose: () => void;
 };
 
-export const StyledMenu = styled(({ open, children, id, anchorEl, onClose }: Props) => (
+export const StyledMenu = styled((props: Props) => (
   <Menu
-    open={open}
     elevation={0}
     anchorOrigin={{
       vertical: 'bottom',
@@ -20,10 +20,7 @@ export const StyledMenu = styled(({ open, children, id, anchorEl, onClose }: Pro
       vertical: 'top',
       horizontal: 'right',
     }}
-    children={children}
-    id={id}
-    anchorEl={anchorEl}
-    onClose={onClose}
+    {...props}
   />
 ))(({ theme }) => ({
   '& .MuiPaper-root': {

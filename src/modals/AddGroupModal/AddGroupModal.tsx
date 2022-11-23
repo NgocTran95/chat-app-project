@@ -1,6 +1,6 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
-import { faClose } from '@fortawesome/free-solid-svg-icons'
+import { faClose } from '@fortawesome/free-solid-svg-icons';
 import { Fade, Modal, Backdrop, IconButton, TextField, Typography, Button, ButtonBase } from '@mui/material';
 import { Box } from '@mui/system';
 import { useContext } from 'react';
@@ -19,7 +19,7 @@ type FormValues = {
   groupAvatar: string;
 };
 
-export const closeIcon = faClose as IconProp
+export const closeIcon = faClose as IconProp;
 
 const cx = classNames.bind(styles);
 function AddGroupModal() {
@@ -34,7 +34,7 @@ function AddGroupModal() {
     formState: { errors },
   } = useForm<FormValues>();
 
-  const handleAddGroup:SubmitHandler<FormValues> = (data) => {
+  const handleAddGroup: SubmitHandler<FormValues> = (data) => {
     // Create Group
     addDoc(collection(db, 'groups'), {
       name: data.groupName,
@@ -99,12 +99,7 @@ function AddGroupModal() {
               <FontAwesomeIcon icon={closeIcon} />
             </IconButton>
           </header>
-          <Box
-            component="form"
-            className={cx('form')}
-            id="addgroup-form"
-            onSubmit={handleSubmit(handleAddGroup)}
-          >
+          <Box component="form" className={cx('form')} id="addgroup-form" onSubmit={handleSubmit(handleAddGroup)}>
             <TextField
               required
               variant="standard"
@@ -138,18 +133,17 @@ function AddGroupModal() {
               {...register('groupAvatar')}
             />
             <div className={cx('btn-groups')}>
-              <Button variant="outlined" className={cx('btn')} onClick={handleCloseModal}>
+              <button className={cx('btn')} onClick={handleCloseModal}>
                 Cancel
-              </Button>
-              <Button
-                variant="contained"
+              </button>
+              <button
                 type="submit"
                 form="addgroup-form"
                 className={cx('btn', 'add-btn')}
                 onClick={handleSubmit(handleAddGroup)}
               >
                 Create
-              </Button>
+              </button>
             </div>
           </Box>
         </Box>

@@ -179,12 +179,12 @@ function InviteMemberModal() {
               debounceTimeout={300}
             />
             <div className={cx('btn-groups')}>
-              <Button variant="outlined" className={cx('btn')} onClick={handleCloseModal}>
+              <button className={cx('btn')} onClick={handleCloseModal}>
                 Cancel
-              </Button>
-              <Button variant="contained" className={cx('btn', 'add-btn')} onClick={handleSubmit(handleInviteMember)}>
+              </button>
+              <button className={cx('btn', 'add-btn')} onClick={handleSubmit(handleInviteMember)}>
                 Invite
-              </Button>
+              </button>
             </div>
           </Box>
         </Box>

@@ -81,12 +81,12 @@ function LeaveGroupModal() {
           </header>
           <p className={cx('content')}>Are you sure to leave this group?</p>
           <div className={cx('btn-groups')}>
-            <Button variant="outlined" className={cx('btn')} onClick={handleCloseModal}>
+            <button className={cx('btn')} onClick={handleCloseModal}>
               Cancel
-            </Button>
-            <Button variant="contained" type="submit" className={cx('btn', 'leave-btn')} onClick={handleLeaveGroup}>
+            </button>
+            <button type="submit" className={cx('btn', 'leave-btn')} onClick={handleLeaveGroup}>
               Leave
-            </Button>
+            </button>
           </div>
         </Box>
       </Fade>

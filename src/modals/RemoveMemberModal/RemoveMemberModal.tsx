@@ -37,7 +37,7 @@ function RemoveMemberModal() {
         createAt: serverTimestamp(),
       });
     });
-    setRemoveMember({displayName: '', uid: ''});
+    setRemoveMember({ displayName: '', uid: '' });
     setIsOpenRemoveMember(false);
   };
 
@@ -68,17 +68,12 @@ function RemoveMemberModal() {
             Are you sure to remove <span className={cx('remove-member')}>{removeMember?.displayName}</span> ?
           </p>
           <div className={cx('btn-groups')}>
-            <Button variant="outlined" className={cx('btn')} onClick={handleCloseModal}>
+            <button className={cx('btn')} onClick={handleCloseModal}>
               Cancel
-            </Button>
-            <Button
-              variant="contained"
-              type="submit"
-              className={cx('btn', 'remove-btn')}
-              onClick={handleRemoveMember}
-            >
+            </button>
+            <button type="submit" className={cx('btn', 'remove-btn')} onClick={handleRemoveMember}>
               Remove
-            </Button>
+            </button>
           </div>
         </Box>
       </Fade>

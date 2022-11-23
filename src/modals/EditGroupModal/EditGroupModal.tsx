@@ -114,18 +114,17 @@ function EditGroupModal() {
               {...register('groupAvatar')}
             />
             <div className={cx('btn-groups')}>
-              <Button variant="outlined" className={cx('btn')} onClick={handleCloseModal}>
+              <button className={cx('btn')} onClick={handleCloseModal}>
                 Cancel
-              </Button>
-              <Button
-                variant="contained"
+              </button>
+              <button
                 type="submit"
                 form="editgroup-form"
                 className={cx('btn', 'edit-btn')}
                 onClick={handleSubmit(handleEditGroup)}
               >
                 Edit
-              </Button>
+              </button>
             </div>
           </Box>
         </Box>

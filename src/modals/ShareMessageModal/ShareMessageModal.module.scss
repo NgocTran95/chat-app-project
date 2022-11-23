@@ -142,8 +142,24 @@
   font-size: 1.3rem;
   font-weight: 500;
   border-radius: 5px !important;
+  background-color: #ffffff;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: var(--button-transition);
+  & ~ .btn {
+    margin-left: 5px;
+  }
+  &:hover {
+    background-color: #f0f0f0;
+  }
   &.share-btn {
     background-color: var(--primary-color);
     color: #ffffff;
+    &:hover {
+      background-color: #ffffff;
+      color: var(--primary-color);
+      border-color: var(--primary-color);
+    }
   }
 }
+
