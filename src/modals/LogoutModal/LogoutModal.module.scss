@@ -40,9 +40,10 @@
 .btn {
     min-width: 100px;
     height: 35px;
-    font-size: 1.3rem ;
+    font-size: 1.3rem;
     font-weight: 500;
     border-radius: 5px !important;
+    cursor: pointer;
     &.logout-btn {
         background-color: var(--danger-color);
         color: #ffffff;
