@@ -1,69 +1,11 @@
-.container {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  min-width: 500px;
-  background-color: #ffffff;
-  border: none;
-  outline: none;
-  border-radius: 10px;
-  padding: 10px 20px 20px;
-}
-
-.header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.close-btn {
-  width: 30px;
-  height: 30px;
-  &:hover {
-    color: red;
-  }
-}
-
 .form {
   margin-top: 20px;
   display: flex;
   flex-direction: column;
   input,
-  span, label {
+  span,
+  label {
     font-size: 1.4rem !important;
     font-weight: 500 !important;
-  }
-}
-
-.btn-groups {
-  align-self: flex-end;
-  margin-top: 30px;
-}
-
-.btn {
-  min-width: 100px;
-  height: 35px;
-  font-size: 1.3rem;
-  font-weight: 500;
-  border-radius: 5px !important;
-  background-color: #ffffff;
-  border: 1px solid transparent;
-  cursor: pointer;
-  transition: var(--button-transition);
-  & ~ .btn {
-    margin-left: 5px;
-  }
-  &:hover {
-    background-color: #f0f0f0;
-  }
-  &.add-btn {
-    background-color: var(--primary-color);
-    color: #ffffff;
-    &:hover {
-      background-color: #ffffff;
-      color: var(--primary-color);
-      border-color: var(--primary-color);
-    }
   }
 }

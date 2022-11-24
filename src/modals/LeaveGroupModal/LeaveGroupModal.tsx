@@ -1,15 +1,12 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Fade, Modal, Backdrop, IconButton, Button } from '@mui/material';
-import { Box } from '@mui/system';
 import { useContext } from 'react';
-
 import classNames from 'classnames/bind';
-import styles from './LeaveGroupModal.module.scss';
 import { doc, updateDoc, addDoc, collection, serverTimestamp } from 'firebase/firestore';
+
+import styles from './LeaveGroupModal.module.scss';
 import { db } from '../../firebase/config';
 import { AuthContext } from '../../Context/AuthProvider';
 import { AppContext } from '../../Context/AppProvider';
-import { closeIcon } from '../AddGroupModal/AddGroupModal';
+import ModalContainer from '../../components/ModalContainer';
 
 const cx = classNames.bind(styles);
 function LeaveGroupModal() {
@@ -60,37 +57,17 @@ function LeaveGroupModal() {
     setIsOpenLeaveGroup(false);
   };
   return (
-    <Modal
-      aria-labelledby="transition-modal-title"
-      aria-describedby="transition-modal-description"
+    <ModalContainer
       open={isOpenLeaveGroup}
-      onClose={handleCloseModal}
-      closeAfterTransition
-      BackdropComponent={Backdrop}
-      BackdropProps={{
-        timeout: 500,
-      }}
+      title="Leave Group"
+      color="danger"
+      formName=""
+      actionBtnName="Leave"
+      handleClose={handleCloseModal}
+      handleAction={handleLeaveGroup}
     >
-      <Fade in={isOpenLeaveGroup}>
-        <Box className={cx('container')}>
-          <header className={cx('header')}>
-            <h4>Leave Group</h4>
-            <IconButton className={cx('close-btn')} onClick={handleCloseModal}>
-              <FontAwesomeIcon icon={closeIcon} />
-            </IconButton>
-          </header>
-          <p className={cx('content')}>Are you sure to leave this group?</p>
-          <div className={cx('btn-groups')}>
-            <button className={cx('btn')} onClick={handleCloseModal}>
-              Cancel
-            </button>
-            <button type="submit" className={cx('btn', 'leave-btn')} onClick={handleLeaveGroup}>
-              Leave
-            </button>
-          </div>
-        </Box>
-      </Fade>
-    </Modal>
+      <p className={cx('content')}>Are you sure to leave this group?</p>
+    </ModalContainer>
   );
 }
 

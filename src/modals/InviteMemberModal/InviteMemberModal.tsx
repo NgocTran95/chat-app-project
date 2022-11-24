@@ -1,5 +1,4 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Fade, Modal, Backdrop, IconButton, TextField, Autocomplete, Avatar, Chip, Button } from '@mui/material';
+import { TextField, Autocomplete, Avatar, Chip } from '@mui/material';
 import { Box } from '@mui/system';
 import { useContext, useEffect, useMemo, useState } from 'react';
 import { debounce } from 'lodash';
@@ -22,7 +21,7 @@ import {
 import { db } from '../../firebase/config';
 import { AuthContext } from '../../Context/AuthProvider';
 import { AppContext } from '../../Context/AppProvider';
-import { closeIcon } from '../AddGroupModal/AddGroupModal';
+import ModalContainer from '../../components/ModalContainer';
 
 const cx = classNames.bind(styles);
 
@@ -152,44 +151,24 @@ function InviteMemberModal() {
     setOptions([]);
   };
   return (
-    <Modal
-      aria-labelledby="transition-modal-title"
-      aria-describedby="transition-modal-description"
+    <ModalContainer
       open={isOpenInviteMember}
-      onClose={handleCloseModal}
-      closeAfterTransition
-      BackdropComponent={Backdrop}
-      BackdropProps={{
-        timeout: 500,
-      }}
+      title="Invite more friends"
+      color="primary"
+      formName="invite-form"
+      actionBtnName="Invite"
+      handleClose={handleCloseModal}
+      handleAction={handleSubmit(handleInviteMember)}
     >
-      <Fade in={isOpenInviteMember}>
-        <Box className={cx('container')}>
-          <header className={cx('header')}>
-            <h4>Invite more friends</h4>
-            <IconButton className={cx('close-btn')} onClick={handleCloseModal}>
-              <FontAwesomeIcon icon={closeIcon} />
-            </IconButton>
-          </header>
-          <Box component="form" className={cx('form')} onSubmit={handleSubmit(handleInviteMember)}>
-            <DebounceAutocomplete
-              fetchOptions={fetchUserList}
-              onChange={(event: React.SyntheticEvent<Element, Event>, value: optionValues[]) => setOptions(value)}
-              curMembers={selectedGroup.members}
-              debounceTimeout={300}
-            />
-            <div className={cx('btn-groups')}>
-              <button className={cx('btn')} onClick={handleCloseModal}>
-                Cancel
-              </button>
-              <button className={cx('btn', 'add-btn')} onClick={handleSubmit(handleInviteMember)}>
-                Invite
-              </button>
-            </div>
-          </Box>
-        </Box>
-      </Fade>
-    </Modal>
+      <Box component="form" className={cx('form')} id="invite-form" onSubmit={handleSubmit(handleInviteMember)}>
+        <DebounceAutocomplete
+          fetchOptions={fetchUserList}
+          onChange={(event: React.SyntheticEvent<Element, Event>, value: optionValues[]) => setOptions(value)}
+          curMembers={selectedGroup.members}
+          debounceTimeout={300}
+        />
+      </Box>
+    </ModalContainer>
   );
 }
 

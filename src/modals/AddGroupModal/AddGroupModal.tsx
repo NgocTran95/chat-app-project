@@ -1,7 +1,6 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
 import { faClose } from '@fortawesome/free-solid-svg-icons';
-import { Fade, Modal, Backdrop, IconButton, TextField, Typography, Button, ButtonBase } from '@mui/material';
+import { TextField, Typography } from '@mui/material';
 import { Box } from '@mui/system';
 import { useContext } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
@@ -12,6 +11,7 @@ import { addDoc, collection, serverTimestamp, query, where, orderBy, getDocs } f
 import { db } from '../../firebase/config';
 import { AuthContext } from '../../Context/AuthProvider';
 import { AppContext } from '../../Context/AppProvider';
+import ModalContainer from '../../components/ModalContainer';
 
 type FormValues = {
   groupName: string;
@@ -80,75 +80,50 @@ function AddGroupModal() {
   };
 
   return (
-    <Modal
-      aria-labelledby="transition-modal-title"
-      aria-describedby="transition-modal-description"
+    <ModalContainer
       open={isOpenAddGroup}
-      onClose={handleCloseModal}
-      closeAfterTransition
-      BackdropComponent={Backdrop}
-      BackdropProps={{
-        timeout: 500,
-      }}
+      title="Create Group"
+      color="primary"
+      formName="addgroup-form"
+      actionBtnName='Create'
+      handleClose={handleCloseModal}
+      handleAction={handleSubmit(handleAddGroup)}
     >
-      <Fade in={isOpenAddGroup}>
-        <Box className={cx('container')}>
-          <header className={cx('header')}>
-            <h4>Create Group</h4>
-            <IconButton className={cx('close-btn')} onClick={handleCloseModal}>
-              <FontAwesomeIcon icon={closeIcon} />
-            </IconButton>
-          </header>
-          <Box component="form" className={cx('form')} id="addgroup-form" onSubmit={handleSubmit(handleAddGroup)}>
-            <TextField
-              required
-              variant="standard"
-              id="groupName"
-              label="Group Name"
-              fullWidth
-              margin="dense"
-              {...register('groupName', { required: true })}
-              error={errors.groupName?.type === 'required'}
-              className={cx('input')}
-            />
-            {errors.groupName?.type === 'required' && (
-              <Typography color="red" role="alert">
-                First name is required
-              </Typography>
-            )}
-            <TextField
-              variant="standard"
-              id="groupDesc"
-              label="Description (Optional)"
-              fullWidth
-              margin="dense"
-              {...register('groupDesc')}
-            />
-            <TextField
-              variant="standard"
-              id="groupAvatar"
-              label="Avatar URL (Optional)"
-              fullWidth
-              margin="dense"
-              {...register('groupAvatar')}
-            />
-            <div className={cx('btn-groups')}>
-              <button className={cx('btn')} onClick={handleCloseModal}>
-                Cancel
-              </button>
-              <button
-                type="submit"
-                form="addgroup-form"
-                className={cx('btn', 'add-btn')}
-                onClick={handleSubmit(handleAddGroup)}
-              >
-                Create
-              </button>
-            </div>
-          </Box>
-        </Box>
-      </Fade>
-    </Modal>
+      <Box component="form" className={cx('form')} id="addgroup-form" onSubmit={handleSubmit(handleAddGroup)}>
+        <TextField
+          required
+          variant="standard"
+          id="groupName"
+          label="Group Name"
+          fullWidth
+          margin="dense"
+          {...register('groupName', { required: true })}
+          error={errors.groupName?.type === 'required'}
+          className={cx('input')}
+        />
+        {errors.groupName?.type === 'required' && (
+          <Typography color="red" role="alert">
+            First name is required
+          </Typography>
+        )}
+        <TextField
+          variant="standard"
+          id="groupDesc"
+          label="Description (Optional)"
+          fullWidth
+          margin="dense"
+          {...register('groupDesc')}
+        />
+        <TextField
+          variant="standard"
+          id="groupAvatar"
+          label="Avatar URL (Optional)"
+          fullWidth
+          margin="dense"
+          {...register('groupAvatar')}
+        />
+      </Box>
+    </ModalContainer>
   );
 }
 

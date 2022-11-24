@@ -1,6 +1,3 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Fade, Modal, Backdrop, IconButton, Button } from '@mui/material';
-import { Box } from '@mui/system';
 import { useContext } from 'react';
 import { doc, updateDoc, addDoc, collection, serverTimestamp } from 'firebase/firestore';
 import classNames from 'classnames/bind';
@@ -9,7 +6,7 @@ import styles from './RemoveMemberModal.module.scss';
 import { db } from '../../firebase/config';
 import { AuthContext } from '../../Context/AuthProvider';
 import { AppContext } from '../../Context/AppProvider';
-import { closeIcon } from '../AddGroupModal/AddGroupModal';
+import ModalContainer from '../../components/ModalContainer';
 
 const cx = classNames.bind(styles);
 function RemoveMemberModal() {
@@ -45,39 +42,19 @@ function RemoveMemberModal() {
     setIsOpenRemoveMember(false);
   };
   return (
-    <Modal
-      aria-labelledby="transition-modal-title"
-      aria-describedby="transition-modal-description"
+    <ModalContainer
       open={isOpenRemoveMember}
-      onClose={handleCloseModal}
-      closeAfterTransition
-      BackdropComponent={Backdrop}
-      BackdropProps={{
-        timeout: 500,
-      }}
+      color="danger"
+      formName=""
+      title="Remove member"
+      actionBtnName="Remove"
+      handleClose={handleCloseModal}
+      handleAction={handleRemoveMember}
     >
-      <Fade in={isOpenRemoveMember}>
-        <Box className={cx('container')}>
-          <header className={cx('header')}>
-            <h4>Remove member</h4>
-            <IconButton className={cx('close-btn')} onClick={handleCloseModal}>
-              <FontAwesomeIcon icon={closeIcon} />
-            </IconButton>
-          </header>
-          <p className={cx('content')}>
-            Are you sure to remove <span className={cx('remove-member')}>{removeMember?.displayName}</span> ?
-          </p>
-          <div className={cx('btn-groups')}>
-            <button className={cx('btn')} onClick={handleCloseModal}>
-              Cancel
-            </button>
-            <button type="submit" className={cx('btn', 'remove-btn')} onClick={handleRemoveMember}>
-              Remove
-            </button>
-          </div>
-        </Box>
-      </Fade>
-    </Modal>
+      <p className={cx('content')}>
+        Are you sure to remove <span className={cx('remove-member')}>{removeMember?.displayName}</span> ?
+      </p>
+    </ModalContainer>
   );
 }
 
