@@ -1,7 +1,7 @@
 import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
 import { ButtonBase, TextField, Box, Input, InputLabel, InputAdornment, IconButton, FormControl } from '@mui/material';
 import { AccountCircle, Lock, Visibility, VisibilityOff, Email } from '@mui/icons-material';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
@@ -11,6 +11,7 @@ import styles from './SignUpForm.module.scss';
 import { auth, db } from '../../../firebase/config';
 import { generateKeyWords } from '../../../firebase/services';
 import { validateSignUpSchema } from '../../../validateForm/validateSchema';
+import { AppContext } from '../../../Context/AppProvider';
 
 const cx = classNames.bind(styles);
 
@@ -28,7 +29,7 @@ type formValues = {
 function SignUpForm({ setIsLogin }: Props) {
   const [isShowPassWord, setIsShowPassword] = useState(false);
   const [isEmailUsed, setIsEmailUsed] = useState(false);
-
+  const { toastMessage, setToastMessage} = useContext(AppContext)
   const {
     register,
     handleSubmit,
@@ -48,6 +49,7 @@ function SignUpForm({ setIsLogin }: Props) {
           keywords: generateKeyWords(username?.toLowerCase()),
           createAt: serverTimestamp(),
         });
+        setToastMessage({ ...toastMessage, open: true, message: 'Sign up successfully', severity: 'success' });
       })
       .catch((error) => {
         if (error.code === 'auth/email-already-in-use') {

@@ -13,7 +13,7 @@ type Props = {
   message: messageType;
 };
 
-const downloadIcon = faDownload as IconProp
+const downloadIcon = faDownload as IconProp;
 
 function MessageContent({ message }: Props) {
   if (message.type === 'application') {
@@ -48,7 +48,7 @@ function MessageContent({ message }: Props) {
   const urlRegex = /[(http(s)?):\/\/(www\.)?a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/gi;
   return (
     <>
-      {!!message.quote && (
+      {!!message.quote?.id && (
         <div className={cx('quote')}>
           <div className={cx('quote-inner')}>
             {message.quote.type === 'application/pdf' && (
