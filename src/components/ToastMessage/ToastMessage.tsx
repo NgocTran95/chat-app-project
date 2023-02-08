@@ -2,14 +2,6 @@ import { Snackbar, Alert } from '@mui/material';
 import { useContext } from 'react';
 import { AppContext } from '../../Context/AppProvider';
 
-type ToastMsg = {
-  open: boolean;
-  vertical: string;
-  horizontal: string;
-  message: string;
-  severity: string;
-};
-
 function ToastMessage() {
   const { toastMessage, setToastMessage } = useContext(AppContext);
   const { vertical, horizontal, open, severity, message } = toastMessage;
